@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1756849167277-n7bao88mt8",
+    "name": "Mohamad Alhussain",
+    "email": "herr.alhussain@gmail.com",
+    "service": {
+      "id": 1,
+      "name": "Herren Haarschnitt",
+      "price": "€15",
+      "duration": 30
+    },
+    "date": "2025-09-03",
+    "time": "10:00",
+    "notes": "wir sind zwei personen so bitte sdf asdf asdf asdfsdljljsdlf sd fdljf lösd öfsd fds sdjflasdj fksadjf jdsakljfalskd j",
+    "createdAt": "2025-09-02T21:39:27.278Z"
+  },
+  {
+    "id": "1756850489934-bqgtq09vtu8",
+    "name": "no name ",
+    "email": "herr.alhussin@gmail.com",
+    "service": {
+      "id": 4,
+      "name": "Kinder Harrschnitt mit Waschen",
+      "price": "€18",
+      "duration": 30
+    },
+    "date": "2025-09-03",
+    "time": "10:30",
+    "notes": "dsf adsf sd fds fds fds fsd ",
+    "createdAt": "2025-09-02T22:01:29.934Z"
+  },
+  {
+    "id": "1756864944456-y0boabcv39n",
+    "name": "Mohama",
+    "email": "herr.alhussin@gmail.com",
+    "service": {
+      "id": 6,
+      "name": "Gesichtsreinigung",
+      "price": "€15",
+      "duration": 30
+    },
+    "date": "2025-09-03",
+    "time": "11:00",
+    "createdAt": "2025-09-03T02:02:24.456Z"
+  }
+]

@@ -36,9 +36,9 @@ export const businessStructuredData = {
   "paymentAccepted": ["Cash", "Credit Card", "Debit Card"],
   "currenciesAccepted": "EUR",
   "image": [
-    "https://ryanbarber.de/ryanbarber%20(1).png",
-    "https://ryanbarber.de/ryanbarber%20(2).png",
-    "https://ryanbarber.de/ryanbarber%20(3).png"
+    "https://ryanbarber.de/ryanbarber%20(1).webp",
+    "https://ryanbarber.de/ryanbarber%20(2).webp",
+    "https://ryanbarber.de/ryanbarber%20(3).webp"
   ],
   "logo": "https://ryanbarber.de/logo.png",
   "sameAs": [

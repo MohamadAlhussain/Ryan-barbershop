@@ -59,9 +59,11 @@ A stunning, modern website for Ryan Barbershop in Potsdam, built with Next.js 14
 
 ## 🛠️ **Technical Stack**
 
-- **Framework**: Next.js 14 with App Router
+- **Framework**: Next.js 15 with App Router
 - **Styling**: Tailwind CSS with custom animations
 - **Language**: TypeScript for type safety
+- **Database**: Upstash Redis for appointments storage
+- **Email**: Nodemailer for appointment confirmations
 - **Fonts**: Inter font family
 - **Icons**: Emoji icons for visual elements
 - **Responsive**: Mobile-first responsive design
@@ -81,9 +83,16 @@ cd ryan-barbershop
 # Install dependencies
 npm install
 
+# Set up environment variables (see VERCEL_KV_SETUP.md)
+cp .env.local.example .env.local
+# Edit .env.local with your Vercel KV credentials
+
 # Run development server
 npm run dev
 ```
+
+### **Database Setup (Required)**
+This project uses Upstash Redis for storing appointments. Follow the setup guide in `VERCEL_KV_SETUP.md` to configure your database.
 
 ### **Build for Production**
 ```bash
@@ -165,22 +174,28 @@ src/
 
 ### **Vercel (Recommended)**
 
-#### **1. Set up Vercel KV Database**
-1. Go to your Vercel dashboard
-2. Navigate to Storage → Create Database → KV
-3. Create a new KV database
-4. Copy the environment variables:
+#### **1. Set up Upstash Redis Database**
+1. Go to [Upstash Console](https://console.upstash.com/)
+2. Create a new account or sign in
+3. Click **Create Database**
+4. Choose a name (e.g., `ryan-barbershop-redis`)
+5. Select the region closest to you
+6. Copy the environment variables:
    - `KV_REST_API_URL`
-   - `KV_REST_API_TOKEN` 
+   - `KV_REST_API_TOKEN`
    - `KV_REST_API_READ_ONLY_TOKEN`
+   - `KV_URL`
+   - `REDIS_URL`
 
 #### **2. Environment Variables**
 Add these to your Vercel project settings:
 ```bash
 # Required for appointments storage
-KV_REST_API_URL=your_kv_rest_api_url_here
-KV_REST_API_TOKEN=your_kv_rest_api_token_here
-KV_REST_API_READ_ONLY_TOKEN=your_kv_read_only_token_here
+KV_REST_API_URL=your_redis_rest_url_here
+KV_REST_API_TOKEN=your_redis_rest_token_here
+KV_REST_API_READ_ONLY_TOKEN=your_readonly_token_here
+KV_URL=your_redis_url_here
+REDIS_URL=your_redis_url_here
 
 # Optional - for email confirmations
 SMTP_HOST=smtp.gmail.com

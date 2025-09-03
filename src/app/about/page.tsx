@@ -41,12 +41,12 @@ export default function About() {
               </div>
             </div>
             <div className="relative">
-              <div className="w-full h-96 rounded-full overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
+              <div className="w-full h-96 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                 <Image
-                  src="/ryanbarber (1).png"
+                  src="/ryanbarber (1).webp"
                   alt="Ryan Barbershop - 20 Jahre Erfahrung"
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-3xl"
                   loading="lazy"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
@@ -110,7 +110,7 @@ export default function About() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                 </div>
                 <div>
@@ -123,7 +123,7 @@ export default function About() {
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
                   <span className="text-xl">🎓</span>
                 </div>
                 <div>
@@ -136,7 +136,7 @@ export default function About() {
               </div>
               
               <div className="flex items-start space-x-4">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                 </div>
                 <div>
@@ -150,12 +150,12 @@ export default function About() {
             </div>
             
             <div className="relative">
-              <div className="w-full h-96 rounded-full overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
+              <div className="w-full h-96 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                 <Image
-                  src="/ryanbarber (2).png"
+                  src="/ryanbarber (2).webp"
                   alt="Ryan Barbershop Team"
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-3xl"
                   loading="lazy"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
@@ -179,13 +179,13 @@ export default function About() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/booking" 
-              className="inline-block px-12 py-5 bg-white text-amber-600 font-bold rounded-full text-sm sm:text-base md:text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              className="inline-block px-12 py-5 bg-white text-amber-600 font-bold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
               Termin Buchen
             </Link>
             <Link 
               href="/contact" 
-              className="inline-block px-12 py-5 border-2 border-white text-white font-semibold rounded-full text-sm sm:text-base md:text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
+              className="inline-block px-12 py-5 border-2 border-white text-white font-semibold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
             >
               Kontakt
             </Link>

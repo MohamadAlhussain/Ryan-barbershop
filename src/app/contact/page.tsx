@@ -5,7 +5,7 @@ export default function Contact() {
   return (
     <main className="min-h-screen bg-black text-white">
       {/* Header */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-gray-900 to-black">
+      <section className="pt-32 pb-8 px-4 bg-gradient-to-b from-gray-900 to-black">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent leading-none">
             Kontakt
@@ -17,22 +17,16 @@ export default function Contact() {
       </section>
 
       {/* Contact Information */}
-      <section className="py-24 px-4 bg-black">
+      <section className="py-12 px-4 bg-black">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-4 text-white">
-              Kontaktieren Sie uns
-            </h2>
-            <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2">
-              Besuchen Sie uns in Potsdam oder kontaktieren Sie uns direkt für einen Termin
-            </p>
           </div>
           
           <div className="grid md:grid-cols-2 gap-16 items-center">
             {/* Contact Details */}
             <div className="space-y-8">
               <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -46,7 +40,7 @@ export default function Contact() {
                 </div>
 
               <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -61,7 +55,7 @@ export default function Contact() {
                 </div>
 
               <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -76,7 +70,7 @@ export default function Contact() {
                 </div>
 
               <div className="flex items-start space-x-6">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -92,12 +86,12 @@ export default function Contact() {
 
             {/* Photo/Visual */}
             <div className="relative">
-              <div className="w-full h-96 rounded-full overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
+              <div className="w-full h-96 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                 <Image
-                  src="/ryanbarber (3).png"
+                  src="/ryanbarber (3).webp"
                   alt="Ryan Barbershop Potsdam"
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-3xl"
                   loading="lazy"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
@@ -118,13 +112,13 @@ export default function Contact() {
             Bleiben Sie auf dem Laufenden über unsere neuesten Angebote und Trends
           </p>
           <div className="flex justify-center space-x-8">
-            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
+            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
 
             </a>
-            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
+            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
 
             </a>
-            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
+            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
 
             </a>
           </div>
@@ -181,13 +175,13 @@ export default function Contact() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/booking" 
-              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-full text-sm sm:text-base md:text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
               Termin Buchen
             </Link>
             <Link 
               href="/services" 
-              className="px-8 py-4 border-2 border-white text-white font-bold rounded-full text-sm sm:text-base md:text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
+              className="px-8 py-4 border-2 border-white text-white font-bold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
             >
               Services ansehen
             </Link>

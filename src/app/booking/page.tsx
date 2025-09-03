@@ -28,8 +28,8 @@ export default function Booking() {
   const hasAvailableSlotsForDate = useMemo(() => {
     return (dateStr: string) => {
       const now = new Date()
-      const berlinTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Berlin"}))
-      const today = `${berlinTime.getFullYear()}-${String(berlinTime.getMonth() + 1).padStart(2, '0')}-${String(berlinTime.getDate()).padStart(2, '0')}`
+      const berlinTime = new Date(now.toLocaleString("sv-SE", {timeZone: "Europe/Berlin"}))
+      const today = berlinTime.toISOString().split('T')[0]
       
       // Get taken appointments for this date
       const takenForDate = new Set<string>()
@@ -226,8 +226,8 @@ export default function Booking() {
   useEffect(() => {
     if (selectedDate && !selectedTime) {
       const now = new Date()
-      const berlinTime = new Date(now.toLocaleString("en-US", {timeZone: "Europe/Berlin"}))
-      const today = `${berlinTime.getFullYear()}-${String(berlinTime.getMonth() + 1).padStart(2, '0')}-${String(berlinTime.getDate()).padStart(2, '0')}`
+      const berlinTime = new Date(now.toLocaleString("sv-SE", {timeZone: "Europe/Berlin"}))
+      const today = berlinTime.toISOString().split('T')[0]
       
       // Get appointments for the selected date
       const appointmentsForDate = appointments.filter(apt => apt.date === selectedDate)
@@ -337,9 +337,13 @@ export default function Booking() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center px-4">
         <div className="text-center">
-          <LoadingSpinner size="lg" color="amber" />
-          <h2 className="text-xl sm:text-2xl font-bold text-white mb-2 mt-6">Termin wird gebucht...</h2>
-          <p className="text-sm sm:text-base text-gray-400">Bitte warten Sie einen Moment</p>
+          <div className="flex flex-col items-center space-y-4">
+            <LoadingSpinner size="lg" color="amber" />
+            <div className="space-y-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-white">Termin wird gebucht...</h2>
+              <p className="text-sm sm:text-base text-gray-400">Bitte warten Sie einen Moment</p>
+            </div>
+          </div>
         </div>
       </div>
     )
@@ -348,7 +352,7 @@ export default function Booking() {
   return (
     <main className="min-h-screen bg-black text-white">
       {/* Header */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-gray-900 to-black">
+      <section className="pt-32 pb-8 px-4 bg-gradient-to-b from-gray-900 to-black">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">
             Termin Buchen
@@ -360,12 +364,9 @@ export default function Booking() {
       </section>
 
       {/* Booking Form */}
-      <section className="py-8 md:py-16 px-4 bg-black">
+      <section className="py-4 md:py-8 px-4 bg-black">
         <div className="max-w-4xl mx-auto">
           <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-4 md:p-8 rounded-2xl border border-gray-700">
-            <h2 className="text-3xl font-bold mb-8 text-amber-400 text-center">
-              Ihren Termin vereinbaren
-            </h2>
             
             <form className="space-y-6 md:space-y-8" onSubmit={handleSubmit}>
               {/* Personal Information - Moved to top for better UX */}
@@ -594,13 +595,13 @@ export default function Booking() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/contact" 
-              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-3xl text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
               Kontakt aufnehmen
             </Link>
             <Link 
               href="/services" 
-              className="px-8 py-4 border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
+              className="px-8 py-4 border-2 border-white text-white font-bold rounded-3xl text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
             >
               Services ansehen
             </Link>

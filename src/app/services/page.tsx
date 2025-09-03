@@ -65,7 +65,7 @@ export default function Services() {
                 </p>
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-400">Dauer: {service.duration}</span>
-                  <button className="px-4 py-2 bg-amber-500 text-black rounded-full text-sm font-medium hover:bg-amber-600 transition-colors">
+                  <button className="px-4 py-2 bg-amber-500 text-black rounded-3xl text-sm font-medium hover:bg-amber-600 transition-colors">
                     Buchen
                   </button>
                 </div>
@@ -133,13 +133,13 @@ export default function Services() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 
               href="/booking" 
-              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-full text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
+              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-3xl text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
             >
               Jetzt Termin Buchen
             </Link>
             <Link 
               href="/about" 
-              className="px-8 py-4 border-2 border-white text-white font-bold rounded-full text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
+              className="px-8 py-4 border-2 border-white text-white font-bold rounded-3xl text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
             >
               Über Uns
             </Link>

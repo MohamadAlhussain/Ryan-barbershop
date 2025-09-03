@@ -49,7 +49,7 @@ export default function Navigation() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2 group">
+          <Link href="/" className="flex items-center space-x-2 group focus:outline-none focus:ring-0">
             <div className="w-10 h-10 bg-gradient-to-br from-amber-400 to-orange-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
               <span className="text-xl font-bold text-black">R</span>
             </div>
@@ -67,7 +67,7 @@ export default function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`relative px-4 py-2 rounded-full font-medium transition-all duration-300 ${
+                className={`relative px-4 py-2 rounded-full font-medium transition-all duration-300 focus:outline-none focus:ring-0 ${
                   item.special
                     ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-black hover:from-amber-600 hover:to-orange-700 transform hover:scale-105 shadow-lg'
                     : pathname === item.href
@@ -123,7 +123,7 @@ export default function Navigation() {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className={`text-xl md:text-2xl font-bold transition-all duration-300 ${
+                  className={`text-xl md:text-2xl font-bold transition-all duration-300 focus:outline-none focus:ring-0 ${
                     item.special
                       ? 'bg-gradient-to-r from-amber-500 to-orange-600 text-black px-6 py-3 rounded-full text-lg'
                       : pathname === item.href

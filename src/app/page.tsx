@@ -135,7 +135,7 @@ export default function Home() {
               
               <div className="space-y-6">
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -148,7 +148,7 @@ export default function Home() {
                 </div>
                 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -161,7 +161,7 @@ export default function Home() {
                 </div>
                 
                 <div className="flex items-start space-x-4">
-                  <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                   </div>
                   <div>
@@ -176,12 +176,12 @@ export default function Home() {
             </div>
             
             <div className="relative">
-              <div className="w-full h-96 rounded-full overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
+              <div className="w-full h-96 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                 <Image
-                  src="/ryanbarber (1).png"
+                  src="/ryanbarber (1).webp"
                   alt="Ryan Barbershop Interior"
                   fill
-                  className="object-cover"
+                  className="object-cover rounded-3xl"
                   priority
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
@@ -208,31 +208,31 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-8">
             {[
               { 
-                image: "/ryanbarber (2).png",
+                image: "/ryanbarber (2).webp",
                 title: "Herrenfrisur", 
                 desc: "Professionelle Herrenfrisuren nach modernsten Trends. Von klassisch bis modern - wir schneiden Ihren perfekten Look.",
                 features: ["Klassische Schnitte", "Moderne Styles", "Individuelle Beratung"]
               },
               { 
-                image: "/ryanbarber (3).png",
+                image: "/ryanbarber (3).webp",
                 title: "Bartpflege", 
                 desc: "Perfekte Bartformung und -pflege für den perfekten Look. Professionelle Bartpflege mit modernsten Techniken.",
                 features: ["Bart schneiden", "Bart formen", "Bart pflegen"]
               },
               { 
-                image: "/ryanbarber (4).png",
+                image: "/ryanbarber (4).webp",
                 title: "Styling & Beratung", 
                 desc: "Individuelles Styling und Beratung für Ihren persönlichen Stil. Wir helfen Ihnen, den perfekten Look zu finden.",
                 features: ["Styling-Beratung", "Produktempfehlungen", "Pflegetipps"]
               }
             ].map((service, index) => (
               <div key={index} className="group bg-black/50 p-8 rounded-3xl border border-gray-700 hover:border-amber-500 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/20">
-                <div className="relative w-full h-48 mb-6 rounded-full overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
+                <div className="relative w-full h-48 mb-6 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                   <Image
                     src={service.image}
                     alt={service.title}
                     fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                    className="object-cover rounded-3xl group-hover:scale-110 transition-transform duration-300"
                     loading="lazy"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
@@ -319,6 +319,11 @@ export default function Home() {
           <div className="text-gray-500 text-xs md:text-sm">
             <p>Mo – Fr : 09:00 – 19:00 | Sa : 09:00 – 18:00</p>
             <p className="mt-1 md:mt-2">Copyright © 2025 Ryan Barbershop | Impressum | Datenschutz</p>
+            <p className="mt-2">
+              <Link href="/admin/appointments" className="text-gray-600 hover:text-amber-400 transition-colors text-xs">
+                Admin Dashboard
+              </Link>
+            </p>
           </div>
         </div>
       </footer>

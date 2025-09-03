@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@vercel/kv": "^1.0.1",
+    "@upstash/redis": "^1.35.3",
     "next": "15.4.6",
     "nodemailer": "^7.0.6",
     "react": "19.1.0",

@@ -11,6 +11,7 @@ type Appointment = {
   date: string
   time: string
   notes?: string
+  status?: 'active' | 'cancelled'
 }
 
 export default function AdminAppointmentsPage() {
@@ -19,6 +20,7 @@ export default function AdminAppointmentsPage() {
 
   const [search, setSearch] = useState<string>('')
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date())
 
 
   useEffect(() => {
@@ -39,16 +41,23 @@ export default function AdminAppointmentsPage() {
 
 
   const filtered = useMemo(() => {
+    const selectedDateStr = selectedDate.toISOString().slice(0, 10)
+    
     return appointments
-      .filter(a =>
-        !search ||
-        a.name.toLowerCase().includes(search.toLowerCase()) ||
-        a.email.toLowerCase().includes(search.toLowerCase()) ||
-
-        (a.service?.name || '').toLowerCase().includes(search.toLowerCase())
-      )
+      .filter(a => {
+        // Filter by search term
+        const matchesSearch = !search ||
+          a.name.toLowerCase().includes(search.toLowerCase()) ||
+          a.email.toLowerCase().includes(search.toLowerCase()) ||
+          (a.service?.name || '').toLowerCase().includes(search.toLowerCase())
+        
+        // Filter by selected date (only for list view)
+        const matchesDate = view === 'calendar' || a.date === selectedDateStr
+        
+        return matchesSearch && matchesDate
+      })
       .sort((x, y) => (x.date + ' ' + x.time).localeCompare(y.date + ' ' + y.time))
-  }, [appointments, search])
+  }, [appointments, search, selectedDate, view])
 
 
 
@@ -81,11 +90,34 @@ export default function AdminAppointmentsPage() {
     return filtered.filter(a => a.date === dStr)
   }
 
+  async function handleCancel(appointmentId: string) {
+    if (!confirm('Are you sure you want to cancel this appointment?')) return
+    
+    try {
+      const response = await fetch(`/api/appointments?id=${appointmentId}`, {
+        method: 'DELETE'
+      })
+      
+      if (response.ok) {
+        // Refresh the appointments list
+        const res = await fetch('/api/appointments', { cache: 'no-store' })
+        if (res.ok) {
+          const data = await res.json()
+          setAppointments(Array.isArray(data.appointments) ? data.appointments : [])
+        }
+      } else {
+        alert('Failed to cancel appointment')
+      }
+    } catch (error) {
+      alert('Failed to cancel appointment')
+    }
+  }
+
   return (
     <main className="min-h-screen bg-black text-white">
       <section className="pt-20 pb-4 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-amber-400">Ryan Barbershop</h1>
+          <h1 className="text-3xl font-bold text-amber-400">Appointments Dashboard</h1>
         </div>
       </section>
 
@@ -130,8 +162,35 @@ export default function AdminAppointmentsPage() {
           </div>
 
           {view === 'list' ? (
-            <div className="overflow-auto">
-              <table className="min-w-full text-sm">
+            <div>
+              {/* Day Navigation for List View */}
+              <div className="flex items-center justify-center gap-4 mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-600">
+                <button
+                  onClick={() => setSelectedDate(new Date(selectedDate.getTime() - 24 * 60 * 60 * 1000))}
+                  className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors"
+                >
+                  ← Previous Day
+                </button>
+                <div className="text-center">
+                  <div className="text-lg font-semibold text-amber-400">
+                    {selectedDate.toLocaleDateString('de-DE', { 
+                      weekday: 'long', 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedDate(new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000))}
+                  className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors"
+                >
+                  Next Day →
+                </button>
+              </div>
+              
+              <div className="overflow-auto">
+                <table className="min-w-full text-sm">
                 <thead className="text-gray-300">
                   <tr>
                     <th className="text-left p-2">Datum</th>
@@ -139,25 +198,47 @@ export default function AdminAppointmentsPage() {
                     <th className="text-left p-2">Service</th>
                     <th className="text-left p-2">Kunde</th>
                     <th className="text-left p-2">Kontakt</th>
+                    <th className="text-left p-2">Status</th>
+                    <th className="text-left p-2">Aktionen</th>
                   </tr>
                 </thead>
                 <tbody className="text-gray-200">
                   {filtered.map((a) => (
-                    <tr key={a.id} className="border-t border-gray-700">
+                    <tr key={a.id} className={`border-t border-gray-700 ${a.status === 'cancelled' ? 'opacity-60' : ''}`}>
                       <td className="p-2">{a.date}</td>
                       <td className="p-2">{a.time}</td>
                       <td className="p-2">{a.service?.name} ({a.service?.duration} Min)</td>
                       <td className="p-2">{a.name}</td>
                       <td className="p-2">{a.email}</td>
+                      <td className="p-2">
+                        {a.status === 'cancelled' ? (
+                          <span className="px-2 py-1 bg-red-600 text-white text-xs rounded">Cancelled</span>
+                        ) : (
+                          <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Active</span>
+                        )}
+                      </td>
+                      <td className="p-2">
+                        <div className="flex gap-2">
+                          {a.status !== 'cancelled' && (
+                            <button
+                              onClick={() => handleCancel(a.id)}
+                              className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
+                            >
+                              Cancel
+                            </button>
+                          )}
+                        </div>
+                      </td>
                     </tr>
                   ))}
                   {filtered.length === 0 && (
                     <tr>
-                      <td className="p-4 text-gray-400" colSpan={5}>Keine Termine vorhanden.</td>
+                      <td className="p-4 text-gray-400" colSpan={7}>Keine Termine vorhanden.</td>
                     </tr>
                   )}
                 </tbody>
               </table>
+              </div>
             </div>
           ) : (
             <div>

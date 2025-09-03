@@ -41,7 +41,7 @@ export default function AdminAppointmentsPage() {
 
 
   const filtered = useMemo(() => {
-    const selectedDateStr = selectedDate.toISOString().slice(0, 10)
+    const selectedDateStr = selectedDate.toLocaleDateString('sv-SE')
     
     return appointments
       .filter(a => {
@@ -86,7 +86,7 @@ export default function AdminAppointmentsPage() {
   const leadingEmpty = Array.from({ length: weekdayIndex(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)) })
 
   function apptsForDay(day: Date) {
-    const dStr = day.toISOString().slice(0, 10)
+    const dStr = day.toLocaleDateString('sv-SE')
     return filtered.filter(a => a.date === dStr)
   }
 
@@ -169,7 +169,7 @@ export default function AdminAppointmentsPage() {
                   onClick={() => setSelectedDate(new Date(selectedDate.getTime() - 24 * 60 * 60 * 1000))}
                   className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors"
                 >
-                  ← Previous Day
+                  ←
                 </button>
                 <div className="text-center">
                   <div className="text-lg font-semibold text-amber-400">
@@ -185,7 +185,7 @@ export default function AdminAppointmentsPage() {
                   onClick={() => setSelectedDate(new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000))}
                   className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors"
                 >
-                  Next Day →
+                  →
                 </button>
               </div>
               
@@ -255,7 +255,7 @@ export default function AdminAppointmentsPage() {
                   const appts = apptsForDay(day)
                   const dayNum = day.getDate()
                   return (
-                    <div key={day.toISOString()} className="h-36 bg-gray-800 rounded-lg border border-gray-700 p-2 group relative">
+                    <div key={day.toLocaleDateString('sv-SE')} className="h-36 bg-gray-800 rounded-lg border border-gray-700 p-2 group relative">
                       <div className="text-xs text-gray-400 mb-1">{dayNum}</div>
                       <div className="space-y-1 max-h-32 overflow-hidden">
                         {appts.map((a) => (
@@ -282,6 +282,9 @@ export default function AdminAppointmentsPage() {
                                 <div className="font-semibold text-amber-400">{a.name}</div>
                                 <div className="text-gray-300">{a.time} - {a.service?.name || 'N/A'}</div>
                                 <div className="text-gray-400">{a.email}</div>
+                                <div className={`text-xs font-medium ${a.status === 'cancelled' ? 'text-red-400' : 'text-green-400'}`}>
+                                  Status: {a.status === 'cancelled' ? 'Cancelled' : 'Active'}
+                                </div>
                                 {a.notes && (
                                   <div className="text-gray-400 italic">&ldquo;{a.notes}&rdquo;</div>
                                 )}

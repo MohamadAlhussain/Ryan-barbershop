@@ -15,6 +15,13 @@ import { checkRateLimit, getClientIP } from '@/lib/rateLimiter'
 
 export async function GET(req: Request) {
   try {
+    // Add CORS headers
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    }
+
     // Clean up old appointments before returning the list
     await cleanupOldAppointments()
     
@@ -24,19 +31,26 @@ export async function GET(req: Request) {
     if (email) {
       // Get appointments for specific email
       const appointments = await getAppointmentsByEmail(email)
-      return NextResponse.json({ appointments })
+      return NextResponse.json({ appointments }, { headers })
     } else {
       // Get all appointments (for admin)
       const list = await readAppointments()
-      return NextResponse.json({ appointments: list })
+      return NextResponse.json({ appointments: list }, { headers })
     }
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500, headers })
   }
 }
 
 export async function POST(req: Request) {
   try {
+    // Add CORS headers
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    }
+
     // Rate limiting check
     const clientIP = getClientIP(req)
     const rateLimit = checkRateLimit(clientIP, 3, 15 * 60 * 1000) // 3 requests per 15 minutes
@@ -45,7 +59,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ 
         error: 'Too many booking attempts. Please try again later.',
         resetTime: rateLimit.resetTime
-      }, { status: 429 })
+      }, { status: 429, headers })
     }
 
     const body = await req.json()
@@ -59,11 +73,11 @@ export async function POST(req: Request) {
     } = body || {}
 
     if (!name || !email || !service || !date || !time) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+      return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers })
     }
 
     if (await isSlotTaken(String(date), String(time))) {
-      return NextResponse.json({ error: 'Slot already taken' }, { status: 409 })
+      return NextResponse.json({ error: 'Slot already taken' }, { status: 409, headers })
     }
 
     const appointment: Appointment = {
@@ -264,9 +278,9 @@ export async function POST(req: Request) {
       })
     }
 
-  return NextResponse.json({ appointment }, { status: 201 })
+  return NextResponse.json({ appointment }, { status: 201, headers })
   } catch {
-    return NextResponse.json({ error: 'Unexpected error' }, { status: 500 })
+    return NextResponse.json({ error: 'Unexpected error' }, { status: 500, headers })
   }
 }
 
@@ -404,17 +418,24 @@ export async function sendCancellationEmail(appointment: Appointment) {
 // New API endpoints for advanced features
 export async function DELETE(req: Request) {
   try {
+    // Add CORS headers
+    const headers = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    }
+
     const { searchParams } = new URL(req.url)
     const appointmentId = searchParams.get('id')
     
     if (!appointmentId) {
-      return NextResponse.json({ error: 'Appointment ID required' }, { status: 400 })
+      return NextResponse.json({ error: 'Appointment ID required' }, { status: 400, headers })
     }
     
     // Get appointment details before cancelling
     const appointment = await getAppointmentById(appointmentId)
     if (!appointment) {
-      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404, headers })
     }
     
     const success = await cancelAppointment(appointmentId)
@@ -423,13 +444,25 @@ export async function DELETE(req: Request) {
       // Send cancellation email
       await sendCancellationEmail(appointment)
       
-      return NextResponse.json({ message: 'Appointment cancelled successfully' }, { status: 200 })
+      return NextResponse.json({ message: 'Appointment cancelled successfully' }, { status: 200, headers })
     } else {
-      return NextResponse.json({ error: 'Appointment not found' }, { status: 404 })
+      return NextResponse.json({ error: 'Appointment not found' }, { status: 404, headers })
     }
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to cancel appointment' }, { status: 500 })
+    return NextResponse.json({ error: 'Failed to cancel appointment' }, { status: 500, headers })
   }
+}
+
+// Handle CORS preflight requests
+export async function OPTIONS(req: Request) {
+  return new NextResponse(null, {
+    status: 200,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+  })
 }
 
 export async function PUT(req: Request) {

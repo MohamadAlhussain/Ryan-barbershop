@@ -1,7 +1,7 @@
 "use client"
 
-
 import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type Appointment = {
   id: string
@@ -20,12 +20,32 @@ export default function AdminAppointmentsPage() {
   const [showDayModal, setShowDayModal] = useState(false)
   const [selectedDayAppointments, setSelectedDayAppointments] = useState<Appointment[]>([])
   const [selectedDay, setSelectedDay] = useState<Date | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const [search, setSearch] = useState<string>('')
   const [currentMonth, setCurrentMonth] = useState<Date>(new Date())
   const [selectedDate, setSelectedDate] = useState<Date>(new Date())
+  const router = useRouter()
+
+  // Check authentication on component mount
+  useEffect(() => {
+    const checkAuth = () => {
+      const auth = localStorage.getItem('admin_auth')
+      if (auth === 'true') {
+        setIsAuthenticated(true)
+      } else {
+        router.push('/admin/login')
+      }
+      setIsLoading(false)
+    }
+    
+    checkAuth()
+  }, [router])
 
   useEffect(() => {
+    if (!isAuthenticated) return
+    
     async function load() {
       try {
         const res = await fetch('/api/appointments', { cache: 'no-store' })
@@ -38,7 +58,7 @@ export default function AdminAppointmentsPage() {
       }
     }
     load()
-  }, [])
+  }, [isAuthenticated])
 
 
 
@@ -130,12 +150,43 @@ export default function AdminAppointmentsPage() {
     setSelectedDayAppointments([])
   }
 
+  const handleLogout = () => {
+    localStorage.removeItem('admin_auth')
+    router.push('/admin/login')
+  }
+
+  // Show loading screen while checking authentication
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-6 border-4 border-amber-500 border-t-transparent rounded-3xl animate-spin"></div>
+          <p className="text-white">Loading...</p>
+        </div>
+      </main>
+    )
+  }
+
+  // Show nothing if not authenticated (will redirect)
+  if (!isAuthenticated) {
+    return null
+  }
+
 
   return (
     <main className="min-h-screen bg-black text-white">
       <section className="pt-20 pb-4 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl font-bold text-amber-400">Appointments Dashboard</h1>
+          <div className="flex justify-between items-center">
+            <div></div>
+            <h1 className="text-3xl font-bold text-amber-400">Appointments Dashboard</h1>
+            <button
+              onClick={handleLogout}
+              className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors"
+            >
+              Abmelden
+            </button>
+          </div>
         </div>
       </section>
 

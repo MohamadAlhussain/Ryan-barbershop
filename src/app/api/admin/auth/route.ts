@@ -5,7 +5,11 @@ export async function POST(req: Request) {
     const { password } = await req.json()
     
     // Get admin password from environment variable
-    const adminPassword = process.env.ADMIN_PASSWORD || 'admin123'
+    const adminPassword = process.env.ADMIN_PASSWORD
+    
+    if (!adminPassword) {
+      return NextResponse.json({ error: 'Admin password not configured' }, { status: 500 })
+    }
     
     if (password === adminPassword) {
       return NextResponse.json({ success: true })

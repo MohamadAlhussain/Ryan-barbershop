@@ -19,75 +19,32 @@ function CancelContent() {
 
     const cancelAppointment = async () => {
       try {
-        // Try multiple approaches to cancel
+        // Try to cancel using a simple GET request first
         let success = false
         
-        // Method 1: Try the new cancel API with GET
         try {
+          // Use a simple GET request to avoid CORS issues
           const response = await fetch(`/api/cancel?id=${token}`, {
             method: 'GET',
+            mode: 'cors',
+            cache: 'no-cache',
             headers: {
-              'Content-Type': 'application/json',
+              'Accept': 'application/json',
             }
           })
           
+          console.log('Response status:', response.status)
+          console.log('Response ok:', response.ok)
+          
           if (response.ok) {
+            const result = await response.json()
+            console.log('Cancel result:', result)
             success = true
+          } else {
+            console.log('Response not ok:', response.status, response.statusText)
           }
         } catch (e) {
-          console.log('Cancel API GET failed, trying DELETE')
-          
-          // Try DELETE method
-          try {
-            const response = await fetch(`/api/cancel?id=${token}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-              }
-            })
-            
-            if (response.ok) {
-              success = true
-            }
-          } catch (e2) {
-            console.log('Cancel API DELETE also failed')
-          }
-        }
-        
-        // Method 2: Try the original appointments API
-        if (!success) {
-          try {
-            const response = await fetch(`/api/appointments?id=${token}`, {
-              method: 'DELETE',
-              headers: {
-                'Content-Type': 'application/json',
-              }
-            })
-            
-            if (response.ok) {
-              success = true
-            }
-          } catch (e) {
-            console.log('Appointments API also failed')
-          }
-        }
-        
-        // Method 3: Direct database call (if API fails)
-        if (!success) {
-          try {
-            const response = await fetch(`/api/cancel-direct?id=${token}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              }
-            })
-            
-            if (response.ok) {
-              success = true
-            }
-          } catch (e) {
-            console.log('Direct cancel also failed')
-          }
+          console.error('Cancel request failed:', e)
         }
 
         if (success) {
@@ -95,10 +52,10 @@ function CancelContent() {
           setMessage('Your appointment has been cancelled successfully.')
         } else {
           setStatus('error')
-          setMessage('Failed to cancel appointment. Please contact us directly.')
+          setMessage('Failed to cancel appointment. Please contact us directly at the phone number provided.')
         }
       } catch (error) {
-        console.error('All cancel methods failed:', error)
+        console.error('Cancel error:', error)
         setStatus('error')
         setMessage('An error occurred while cancelling your appointment. Please contact us directly.')
       }
@@ -172,9 +129,14 @@ function CancelContent() {
                 
                 <div className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 border border-gray-500/30 rounded-xl p-4 mb-6">
                   <h3 className="text-lg font-semibold text-white mb-2">Kontaktieren Sie uns</h3>
-                  <p className="text-gray-300 text-sm">
+                  <p className="text-gray-300 text-sm mb-3">
                     Falls Sie Ihren Termin absagen möchten, kontaktieren Sie uns bitte direkt.
                   </p>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-amber-400 font-semibold">📞 Telefon: +49 123 456 789</p>
+                    <p className="text-amber-400 font-semibold">📧 E-Mail: info@ryanbarber.de</p>
+                    <p className="text-gray-300">Mo-Fr: 9:00-18:00, Sa: 9:00-16:00</p>
+                  </div>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -203,9 +165,14 @@ function CancelContent() {
                 
                 <div className="bg-gradient-to-r from-gray-700/50 to-gray-600/50 border border-gray-500/30 rounded-xl p-4 mb-6">
                   <h3 className="text-lg font-semibold text-white mb-2">Was können Sie tun?</h3>
-                  <p className="text-gray-300 text-sm">
+                  <p className="text-gray-300 text-sm mb-3">
                     Sie können einen neuen Termin buchen oder uns direkt kontaktieren.
                   </p>
+                  <div className="space-y-2 text-sm">
+                    <p className="text-amber-400 font-semibold">📞 Telefon: +49 123 456 789</p>
+                    <p className="text-amber-400 font-semibold">📧 E-Mail: info@ryanbarber.de</p>
+                    <p className="text-gray-300">Mo-Fr: 9:00-18:00, Sa: 9:00-16:00</p>
+                  </div>
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">

@@ -19,7 +19,7 @@ function CancelContent() {
 
     const cancelAppointment = async () => {
       try {
-        const response = await fetch(`/api/appointments?id=${token}`, {
+        const response = await fetch(`/api/cancel?id=${token}`, {
           method: 'DELETE'
         })
 

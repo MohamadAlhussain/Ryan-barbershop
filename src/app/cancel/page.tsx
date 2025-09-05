@@ -19,20 +19,88 @@ function CancelContent() {
 
     const cancelAppointment = async () => {
       try {
-        const response = await fetch(`/api/cancel?id=${token}`, {
-          method: 'DELETE'
-        })
+        // Try multiple approaches to cancel
+        let success = false
+        
+        // Method 1: Try the new cancel API with GET
+        try {
+          const response = await fetch(`/api/cancel?id=${token}`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            }
+          })
+          
+          if (response.ok) {
+            success = true
+          }
+        } catch (e) {
+          console.log('Cancel API GET failed, trying DELETE')
+          
+          // Try DELETE method
+          try {
+            const response = await fetch(`/api/cancel?id=${token}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            })
+            
+            if (response.ok) {
+              success = true
+            }
+          } catch (e2) {
+            console.log('Cancel API DELETE also failed')
+          }
+        }
+        
+        // Method 2: Try the original appointments API
+        if (!success) {
+          try {
+            const response = await fetch(`/api/appointments?id=${token}`, {
+              method: 'DELETE',
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            })
+            
+            if (response.ok) {
+              success = true
+            }
+          } catch (e) {
+            console.log('Appointments API also failed')
+          }
+        }
+        
+        // Method 3: Direct database call (if API fails)
+        if (!success) {
+          try {
+            const response = await fetch(`/api/cancel-direct?id=${token}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              }
+            })
+            
+            if (response.ok) {
+              success = true
+            }
+          } catch (e) {
+            console.log('Direct cancel also failed')
+          }
+        }
 
-        if (response.ok) {
+        if (success) {
           setStatus('success')
           setMessage('Your appointment has been cancelled successfully.')
         } else {
           setStatus('error')
-          setMessage('Failed to cancel appointment. It may have already been cancelled or does not exist.')
+          setMessage('Failed to cancel appointment. Please contact us directly.')
         }
       } catch (error) {
+        console.error('All cancel methods failed:', error)
         setStatus('error')
-        setMessage('An error occurred while cancelling your appointment.')
+        setMessage('An error occurred while cancelling your appointment. Please contact us directly.')
       }
     }
 

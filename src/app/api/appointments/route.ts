@@ -120,7 +120,6 @@ export async function POST(req: Request) {
       })
 
       const subject = `Terminbestätigung ${appointment.date} ${appointment.time}`
-      const cancelUrl = `${process.env.VERCEL_URL || 'https://ryan-barbershop.vercel.app'}/cancel?token=${appointment.id}`
       
       const text = `Hallo ${appointment.name},\n\n` +
         `Ihr Termin wurde bestätigt.\n` +
@@ -129,7 +128,9 @@ export async function POST(req: Request) {
         `Uhrzeit: ${appointment.time}\n` +
         `Dauer: ${appointment.service.duration} Min\n` +
         `${appointment.notes ? `\nHinweise: ${appointment.notes}\n` : ''}` +
-        `\nTermin absagen: ${cancelUrl}\n` +
+        `\nFalls Sie den Termin absagen möchten, kontaktieren Sie uns bitte direkt:\n` +
+        `📞 Telefon: +49 123 456 789\n` +
+        `📧 E-Mail: info@ryanbarber.de\n` +
         `\nBis bald im RYAN BARBERSHOP!`
 
       const html = `
@@ -240,14 +241,15 @@ export async function POST(req: Request) {
                 </div>
               </div>
 
-              <!-- Cancel Appointment -->
+              <!-- Contact Information -->
               <div style="text-align:center;margin-bottom:20px">
                 <p style="margin:0 0 15px 0;font-size:13px;color:#64748b;line-height:1.4">
-                  Falls Sie den Termin absagen möchten, klicken Sie auf den folgenden Link:
+                  Falls Sie den Termin absagen oder ändern möchten, kontaktieren Sie uns bitte direkt:
                 </p>
-                <a href="${cancelUrl}" style="display:inline-block;background:#dc2626;color:#ffffff;text-decoration:none;padding:12px 24px;border-radius:8px;font-weight:600;font-size:14px;box-shadow:0 4px 12px -2px rgba(220,38,38,0.4)">
-                  Termin absagen
-                </a>
+                <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:15px;margin:10px 0">
+                  <p style="margin:0 0 8px 0;font-size:14px;color:#1e293b;font-weight:600">📞 Telefon: +49 123 456 789</p>
+                  <p style="margin:0;font-size:14px;color:#1e293b;font-weight:600">📧 E-Mail: info@ryanbarber.de</p>
+                </div>
               </div>
 
               <!-- Footer -->

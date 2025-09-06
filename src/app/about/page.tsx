@@ -5,12 +5,12 @@ export default function About() {
   return (
     <main className="min-h-screen bg-black text-white">
       {/* Header */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-gray-900 to-black">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent leading-none">
+      <section className="pt-32 pb-8 px-4 bg-gradient-to-b from-gray-900 to-black">
+        <div className="container-max text-center">
+          <h1 className="heading-primary mb-4 fade-in">
             Über Uns
           </h1>
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-body text-gray-400 max-w-3xl mx-auto fade-in-delay-1">
             Seit über 20 Jahren sind wir Ihr vertrauensvoller Partner für professionelle Herrenfrisuren in Potsdam
           </p>
         </div>
@@ -18,13 +18,13 @@ export default function About() {
 
       {/* Story Section */}
       <section className="py-24 px-4 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto fade-in">
+          <div className="grid md:grid-cols-2 gap-16 items-center fade-in-delay-1">
             <div>
-              <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-6 text-amber-400">
+              <h2 className="heading-tertiary mb-4 text-amber-400">
                 Unsere Geschichte
               </h2>
-              <div className="space-y-6 text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+              <div className="space-y-6 text-body">
                 <p>
                   Was als kleiner Traum begann, ist heute zu einem der beliebtesten Barbershops in Potsdam geworden. 
                   Seit über 20 Jahren bieten wir professionelle Herrenfrisuren und Bartpflege mit Leidenschaft und Hingabe.
@@ -60,21 +60,21 @@ export default function About() {
 
       {/* Values Section */}
       <section className="py-24 px-4 bg-gray-900">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-4 text-white">
+        <div className="max-w-7xl mx-auto fade-in">
+          <div className="text-center mb-8 fade-in">
+            <h2 className="heading-secondary mb-4">
               Unsere Werte
             </h2>
-            <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2">
+            <p className="text-body text-gray-400 max-w-3xl mx-auto">
               Was uns antreibt und was Sie bei uns erwarten können
             </p>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-8 fade-in-delay-1">
             {[
               {
                 title: "Qualität",
-                description: "Wir setzen auf höchste Qualität in allem, was wir tun. Von der Beratung bis zum finalen Schnitt - Perfektion ist unser Standard."
+                description: "Wir setzen auf höchste Qualität in allem, was wir tun. Von der Beratung bis zum finalen Haarschnitt - Perfektion ist unser Standard."
               },
               {
                 title: "Vertrauen",
@@ -86,9 +86,8 @@ export default function About() {
               }
             ].map((value, index) => (
               <div key={index} className="text-center p-8 bg-black/50 rounded-3xl border border-gray-700 hover:border-amber-500 transition-all duration-300">
-
-                <h3 className="text-base sm:text-lg md:text-xl font-bold mb-4 text-amber-400">{value.title}</h3>
-                <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">{value.description}</p>
+                <h3 className="text-lg font-bold mb-4 text-amber-400">{value.title}</h3>
+                <p className="text-body">{value.description}</p>
               </div>
             ))}
           </div>
@@ -97,25 +96,25 @@ export default function About() {
 
       {/* Team Section */}
       <section className="py-24 px-4 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-4 text-white">
+        <div className="max-w-7xl mx-auto fade-in">
+          <div className="text-center mb-8 fade-in">
+            <h2 className="heading-secondary mb-4">
               Unser Team
             </h2>
-            <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2">
+            <p className="text-body text-gray-400 max-w-3xl mx-auto">
               Erfahrene Profis, die Ihr Vertrauen verdienen
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center fade-in-delay-1">
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-2">Erfahrene Friseure</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                  <h3 className="text-lg font-bold text-white mb-2">Erfahrene Friseure</h3>
+                  <p className="text-body">
                     Unser Team besteht aus erfahrenen Friseuren mit jahrzehntelanger Erfahrung. 
                     Wir kennen die neuesten Trends und Techniken.
                   </p>
@@ -124,11 +123,10 @@ export default function About() {
               
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
-                  <span className="text-xl">🎓</span>
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-2">Regelmäßige Weiterbildung</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                  <h3 className="text-lg font-bold text-white mb-2">Regelmäßige Weiterbildung</h3>
+                  <p className="text-body">
                     Wir investieren kontinuierlich in unsere Weiterbildung, um Ihnen den besten Service 
                     und die neuesten Techniken zu bieten.
                   </p>
@@ -140,9 +138,9 @@ export default function About() {
 
                 </div>
                 <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-semibold text-white mb-2">Leidenschaft für das Handwerk</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
-                    Wir lieben, was wir tun. Diese Leidenschaft spüren Sie in jedem Schnitt und 
+                  <h3 className="text-lg font-bold text-white mb-2">Leidenschaft für das Handwerk</h3>
+                  <p className="text-body">
+                    Wir lieben, was wir tun. Diese Leidenschaft spüren Sie in jedem Haarschnitt und 
                     in jeder Beratung.
                   </p>
                 </div>
@@ -168,25 +166,19 @@ export default function About() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 px-4 bg-gradient-to-r from-amber-600 to-orange-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-4 text-white">
+      <section className="py-20 px-4 bg-gradient-to-r from-amber-600 to-orange-600">
+        <div className="max-w-4xl mx-auto text-center fade-in">
+          <h2 className="heading-secondary mb-6 text-white">
             Lernen Sie uns kennen
           </h2>
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-white/90 mb-6 px-2">
+          <p className="text-body text-white/90 mb-8">
             Besuchen Sie uns in Potsdam und erleben Sie den Ryan Barbershop Unterschied
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/booking" 
-              className="inline-block px-12 py-5 bg-white text-amber-600 font-bold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
-            >
+          <div className="flex flex-row gap-3 justify-center">
+            <Link href="/booking" className="btn-primary">
               Termin Buchen
             </Link>
-            <Link 
-              href="/contact" 
-              className="inline-block px-12 py-5 border-2 border-white text-white font-semibold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
-            >
+            <Link href="/contact" className="btn-secondary">
               Kontakt
             </Link>
           </div>
@@ -210,6 +202,11 @@ export default function About() {
           <div className="text-gray-500 text-xs md:text-sm">
             <p>Mo – Fr : 09:00 – 19:00 | Sa : 09:00 – 18:00</p>
             <p className="mt-1 md:mt-2">Copyright © 2025 Ryan Barbershop | Impressum | Datenschutz</p>
+            <p className="mt-2">
+              <Link href="/admin/appointments" className="text-gray-600 hover:text-amber-400 transition-colors text-xs">
+                Admin Dashboard
+              </Link>
+            </p>
           </div>
         </div>
       </footer>

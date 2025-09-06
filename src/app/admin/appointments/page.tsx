@@ -60,80 +60,32 @@ export default function AdminAppointmentsPage() {
     load()
   }, [isAuthenticated])
 
-
-
-  const filtered = useMemo(() => {
-    const selectedDateStr = selectedDate.toLocaleDateString('sv-SE')
-    
-    return appointments
-      .filter(a => {
-        // Filter by search term
-        const matchesSearch = !search ||
-          a.name.toLowerCase().includes(search.toLowerCase()) ||
-          a.email.toLowerCase().includes(search.toLowerCase()) ||
-          (a.service?.name || '').toLowerCase().includes(search.toLowerCase())
-        
-        // Filter by selected date (only for list view)
-        const matchesDate = view === 'calendar' || a.date === selectedDateStr
-        
-        return matchesSearch && matchesDate
-      })
-      .sort((x, y) => (x.date + ' ' + x.time).localeCompare(y.date + ' ' + y.time))
-  }, [appointments, search, selectedDate, view])
-
-
-
-  function monthLabel(d: Date) {
-    return d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
+  const handleLogout = () => {
+    localStorage.removeItem('admin_auth')
+    router.push('/admin/login')
   }
 
-  function endOfMonth(d: Date) {
-    return new Date(d.getFullYear(), d.getMonth() + 1, 0)
-  }
-  function daysInMonth(d: Date) {
-    const end = endOfMonth(d).getDate()
-    const days: Date[] = []
-    for (let i = 1; i <= end; i++) {
-      days.push(new Date(d.getFullYear(), d.getMonth(), i))
-    }
-    return days
-  }
-  function weekdayIndex(date: Date) {
-    // Convert Sun(0) => 6, Mon(1) => 0 ... to render Monday-first
-    const js = date.getDay()
-    return js === 0 ? 6 : js - 1
-  }
+  const monthLabel = (d: Date) => d.toLocaleDateString('de-DE', { month: 'long', year: 'numeric' })
 
-  const days = daysInMonth(currentMonth)
-  const leadingEmpty = Array.from({ length: weekdayIndex(new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)) })
-
-  function apptsForDay(day: Date) {
-    const dStr = day.toLocaleDateString('sv-SE')
-    return filtered.filter(a => a.date === dStr)
-  }
-
-  async function handleCancel(appointmentId: string) {
-    if (!confirm('Are you sure you want to cancel this appointment?')) return
+  const cancelAppointment = async (id: string) => {
+    if (!confirm('Diesen Termin wirklich stornieren?')) return
     
     try {
-      const response = await fetch(`/api/appointments?id=${appointmentId}`, {
-        method: 'DELETE'
-      })
-      
-      if (response.ok) {
-        // Refresh the appointments list
-        const res = await fetch('/api/appointments', { cache: 'no-store' })
-        if (res.ok) {
-          const data = await res.json()
+      const res = await fetch(`/api/appointments?id=${id}`, { method: 'DELETE' })
+      if (res.ok) {
+        const updatedRes = await fetch('/api/appointments', { cache: 'no-store' })
+        if (updatedRes.ok) {
+          const data = await updatedRes.json()
           setAppointments(Array.isArray(data.appointments) ? data.appointments : [])
         }
       } else {
         alert('Failed to cancel appointment')
       }
-    } catch (error) {
+    } catch {
       alert('Failed to cancel appointment')
     }
   }
+
 
   const handleDayClick = (day: Date) => {
     const dayAppointments = apptsForDay(day)
@@ -144,129 +96,156 @@ export default function AdminAppointmentsPage() {
     }
   }
 
-  const closeDayModal = () => {
-    setShowDayModal(false)
-    setSelectedDay(null)
-    setSelectedDayAppointments([])
+  const filtered = useMemo(() => {
+    return appointments.filter(a => {
+      const matchesSearch = !search || 
+        a.name.toLowerCase().includes(search.toLowerCase()) ||
+        a.email.toLowerCase().includes(search.toLowerCase())
+      
+      const isToday = selectedDate.toISOString().slice(0, 10) === a.date
+      return matchesSearch && isToday
+    })
+  }, [appointments, search, selectedDate])
+
+  const apptsForDay = (day: Date) => {
+    const dayStr = day.toISOString().slice(0, 10)
+    return appointments.filter(a => a.date === dayStr)
   }
 
-  const handleLogout = () => {
-    localStorage.removeItem('admin_auth')
-    router.push('/admin/login')
-  }
+  const daysInMonth = (year: number, month: number) => new Date(year, month + 1, 0).getDate()
+  
+  const firstDayOfMonth = useMemo(() => {
+    const first = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
+    const day = first.getDay()
+    return day === 0 ? 6 : day - 1 // Convert Sunday=0 to Monday=0
+  }, [currentMonth])
 
-  // Show loading screen while checking authentication
+  const days = useMemo(() => {
+    const year = currentMonth.getFullYear()
+    const month = currentMonth.getMonth()
+    const numDays = daysInMonth(year, month)
+    
+    return Array.from({ length: numDays }, (_, i) => new Date(year, month, i + 1))
+  }, [currentMonth])
+
+  const leadingEmpty = useMemo(() => Array(firstDayOfMonth).fill(null), [firstDayOfMonth])
+
+
+
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-black text-white flex items-center justify-center">
+      <div className="min-h-screen bg-black text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 mx-auto mb-6 border-4 border-amber-500 border-t-transparent rounded-3xl animate-spin"></div>
-          <p className="text-white">Loading...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-amber-400 mx-auto mb-4"></div>
+          <p>Loading...</p>
         </div>
-      </main>
+      </div>
     )
   }
 
-  // Show nothing if not authenticated (will redirect)
   if (!isAuthenticated) {
     return null
   }
 
-
   return (
     <main className="min-h-screen bg-black text-white">
       <section className="pt-20 pb-4 px-4">
-        <div className="max-w-6xl mx-auto text-center">
-          <div className="flex justify-between items-center">
-            <div></div>
-            <h1 className="text-3xl font-bold text-amber-400">Appointments Dashboard</h1>
-            <button
-              onClick={handleLogout}
-              className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors"
-            >
-              Abmelden
-            </button>
-          </div>
+        <div className="max-w-6xl mx-auto">
+          {/* Mobile-friendly header without title */}
         </div>
       </section>
 
       <section className="px-4 pb-16">
-        <div className="max-w-6xl mx-auto bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700 space-y-4">
-          <div className="grid md:grid-cols-3 gap-3">
-            <input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Suche"
-              className="px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400"
-            />
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))}
-                className="px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500"
-              >
-                ‹
-              </button>
-              <div className="px-3 py-2 text-gray-200">{monthLabel(currentMonth)}</div>
-              <button
-                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))}
-                className="px-3 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500"
-              >
-                ›
-              </button>
-            </div>
-            <div className="flex items-center justify-end gap-2">
+        <div className="max-w-6xl mx-auto bg-gradient-to-br from-gray-800 to-gray-900 p-4 md:p-6 rounded-2xl border border-gray-700 space-y-4">
+          {/* Mobile-optimized controls */}
+          <div className="space-y-3">
+            {/* View Toggle - Mobile Friendly */}
+            <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={() => setView('list')}
-                className={`px-3 py-2 rounded-lg border ${view === 'list' ? 'bg-amber-600 border-amber-500 text-black' : 'bg-gray-700 border-gray-600 text-white hover:border-amber-500'}`}
+                className={`flex-1 px-4 py-3 text-sm rounded-lg transition-all touch-target ${
+                  view === 'list' 
+                    ? 'bg-amber-600 text-white shadow-lg' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
               >
                 Liste
               </button>
               <button
                 onClick={() => setView('calendar')}
-                className={`px-3 py-2 rounded-lg border ${view === 'calendar' ? 'bg-amber-600 border-amber-500 text-black' : 'bg-gray-700 border-gray-600 text-white hover:border-amber-500'}`}
+                className={`flex-1 px-4 py-3 text-sm rounded-lg transition-all touch-target ${
+                  view === 'calendar' 
+                    ? 'bg-amber-600 text-white shadow-lg' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
               >
                 Kalender
               </button>
             </div>
+
+            {/* Search - Full Width */}
+            <input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Nach Name oder Email suchen..."
+              className="w-full px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white placeholder-gray-400 touch-target focus:ring-2 focus:ring-amber-500 focus:outline-none"
+            />
+            
+            {/* Month Navigation - Mobile Friendly */}
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1, 1))}
+                className="px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 touch-target text-lg"
+              >
+                ‹
+              </button>
+              <div className="px-4 py-3 text-gray-200 font-medium text-center">{monthLabel(currentMonth)}</div>
+              <button
+                onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 1))}
+                className="px-4 py-3 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 touch-target text-lg"
+              >
+                ›
+              </button>
+            </div>
           </div>
 
+          {/* Content based on view */}
           {view === 'list' ? (
-            <div>
-              {/* Day Navigation for List View */}
-              <div className="flex items-center justify-center gap-4 mb-6 p-4 bg-gray-800/50 rounded-lg border border-gray-600">
-                <button
-                  onClick={() => setSelectedDate(new Date(selectedDate.getTime() - 24 * 60 * 60 * 1000))}
-                  className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors"
-                >
-                  ←
-                </button>
-                <div className="text-center">
-                  <div className="text-lg font-semibold text-amber-400">
-                    {selectedDate.toLocaleDateString('de-DE', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}
-                  </div>
+            /* List View */
+            <div className="overflow-x-auto">
+            <div className="flex items-center gap-2 py-2 mb-4">
+              <button
+                onClick={() => setSelectedDate(new Date(selectedDate.getTime() - 24 * 60 * 60 * 1000))}
+                className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors touch-target"
+              >
+                ←
+              </button>
+              <div className="flex-1 text-center">
+                <div className="text-lg font-semibold text-amber-400">
+                  {selectedDate.toLocaleDateString('de-DE', { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                  })}
                 </div>
-                <button
-                  onClick={() => setSelectedDate(new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000))}
-                  className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors"
-                >
-                  →
-                </button>
               </div>
-              
-              <div className="overflow-auto">
-                <table className="min-w-full text-sm">
+              <button
+                onClick={() => setSelectedDate(new Date(selectedDate.getTime() + 24 * 60 * 60 * 1000))}
+                className="px-4 py-2 rounded-lg bg-gray-700 border border-gray-600 text-white hover:border-amber-500 transition-colors touch-target"
+              >
+                →
+              </button>
+            </div>
+            
+            <div className="overflow-auto">
+              <table className="min-w-full text-sm">
                 <thead className="text-gray-300">
                   <tr>
-                    <th className="text-left p-2">Datum</th>
                     <th className="text-left p-2">Zeit</th>
                     <th className="text-left p-2">Service</th>
                     <th className="text-left p-2">Kunde</th>
-                    <th className="text-left p-2">Kontakt</th>
+                    <th className="text-left p-2 hidden sm:table-cell">Kontakt</th>
                     <th className="text-left p-2">Status</th>
                     <th className="text-left p-2">Aktionen</th>
                   </tr>
@@ -274,84 +253,98 @@ export default function AdminAppointmentsPage() {
                 <tbody className="text-gray-200">
                   {filtered.map((a) => (
                     <tr key={a.id} className={`border-t border-gray-700 ${a.status === 'cancelled' ? 'opacity-60' : ''}`}>
-                      <td className="p-2">{a.date}</td>
-                      <td className="p-2">{a.time}</td>
-                      <td className="p-2">{a.service?.name} ({a.service?.duration} Min)</td>
-                      <td className="p-2">{a.name}</td>
-                      <td className="p-2">{a.email}</td>
+                      <td className="p-2 font-medium">{a.time}</td>
+                      <td className="p-2">
+                        <div className="text-sm">{a.service?.name}</div>
+                        <div className="text-xs text-gray-400">{a.service?.duration} Min</div>
+                      </td>
+                      <td className="p-2">
+                        <div className="text-sm font-medium">{a.name}</div>
+                        <div className="text-xs text-gray-400 sm:hidden">{a.email}</div>
+                      </td>
+                      <td className="p-2 hidden sm:table-cell text-xs">{a.email}</td>
                       <td className="p-2">
                         {a.status === 'cancelled' ? (
-                          <span className="px-2 py-1 bg-red-600 text-white text-xs rounded">Cancelled</span>
+                          <button className="px-3 py-1 bg-red-600 text-white text-xs rounded-lg transition-colors touch-target cursor-default">
+                            Cancelled
+                          </button>
                         ) : (
-                          <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">Active</span>
+                          <button className="px-3 py-1 bg-amber-600 text-white text-xs rounded-lg transition-colors touch-target cursor-default">
+                            Active
+                          </button>
                         )}
                       </td>
                       <td className="p-2">
-                        <div className="flex gap-2">
-                          {a.status !== 'cancelled' && (
-                            <button
-                              onClick={() => handleCancel(a.id)}
-                              className="px-3 py-1 bg-red-600 text-white text-xs rounded hover:bg-red-700 transition-colors"
-                            >
-                              Cancel
-                            </button>
-                          )}
-                        </div>
+                        {a.status !== 'cancelled' && (
+                          <button
+                            onClick={() => cancelAppointment(a.id)}
+                            className="px-3 py-1 bg-red-600 text-white text-xs rounded-lg hover:bg-red-700 transition-colors touch-target"
+                          >
+                            Stornieren
+                          </button>
+                        )}
                       </td>
                     </tr>
                   ))}
                   {filtered.length === 0 && (
                     <tr>
-                      <td className="p-4 text-gray-400" colSpan={7}>Keine Termine vorhanden.</td>
+                      <td colSpan={6} className="p-8 text-center text-gray-400">
+                        Keine Termine für diesen Tag gefunden
+                      </td>
                     </tr>
                   )}
                 </tbody>
               </table>
-              </div>
             </div>
+          </div>
           ) : (
+            /* Calendar View */
             <div>
-              <div className="grid grid-cols-7 gap-2 text-center text-gray-300 text-xs mb-2">
+              {/* Mobile-optimized calendar */}
+              <div className="grid grid-cols-7 gap-1 sm:gap-2 text-center text-gray-300 text-xs mb-2">
                 {['Mo','Di','Mi','Do','Fr','Sa','So'].map((d) => (
                   <div key={d} className="py-1">{d}</div>
                 ))}
               </div>
-              <div className="grid grid-cols-7 gap-2">
+              <div className="grid grid-cols-7 gap-1 sm:gap-2">
                 {leadingEmpty.map((_, idx) => (
-                  <div key={`empty-${idx}`} className="h-36 bg-gray-800/60 rounded-lg border border-gray-700"></div>
+                  <div key={`empty-${idx}`} className="h-24 sm:h-36 bg-gray-800/60 rounded-lg border border-gray-700"></div>
                 ))}
                 {days.map((day) => {
                   const appts = apptsForDay(day)
                   const dayNum = day.getDate()
                   return (
-                    <div 
-                      key={day.toLocaleDateString('sv-SE')} 
-                      className={`h-40 bg-gray-800 rounded-lg border border-gray-700 p-2 cursor-pointer transition-all duration-200 ${
-                        appts.length > 0 
-                          ? 'hover:bg-gray-750 hover:border-amber-500 hover:shadow-lg' 
-                          : 'hover:bg-gray-750'
+                    <div
+                      key={day.toISOString()}
+                      onClick={() => appts.length > 0 && handleDayClick(day)}
+                      className={`h-24 sm:h-36 border border-gray-700 rounded-lg p-1 sm:p-2 cursor-pointer transition-all text-xs space-y-1 touch-target ${
+                        selectedDate && day.toDateString() === selectedDate.toDateString()
+                          ? 'border-amber-500 bg-amber-500/10' 
+                          : appts.length > 0 
+                            ? 'border-amber-400/60 bg-amber-400/10 hover:border-amber-400 hover:bg-amber-400/20' 
+                            : 'bg-gray-800/30 hover:bg-gray-800/50'
                       }`}
-                      onClick={() => handleDayClick(day)}
                     >
-                      <div className="text-xs text-gray-400 mb-1">{dayNum}</div>
-                      <div className="space-y-1 max-h-36 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-                        {appts.slice(0, 4).map((a) => (
+                      <div className={`text-center font-medium mb-1 ${dayNum === 1 ? 'text-amber-400' : 'text-gray-300'}`}>
+                        {dayNum}
+                      </div>
+                      <div className="space-y-0.5">
+                        {appts.slice(0, 3).map((apt, i) => (
                           <div 
-                            key={a.id} 
-                            className="text-[10px] bg-gray-700 border border-gray-600 rounded px-1 py-0.5 flex justify-between items-center"
-                            title={`${a.time} - ${a.name} - ${a.service?.name || 'N/A'} - ${a.email}`}
+                            key={i} 
+                            className={`text-xs p-1 rounded-lg truncate ${
+                              apt.status === 'cancelled' 
+                                ? 'bg-red-600/30 text-red-300' 
+                                : 'bg-amber-600/30 text-amber-200'
+                            }`}
                           >
-                            <span className="text-amber-300 mr-1">{a.time}</span>
-                            <span className="truncate text-[9px]">{a.name}</span>
+                            {apt.time}
                           </div>
                         ))}
-                        {appts.length > 4 && (
-                          <div className="text-[9px] text-amber-400 font-semibold text-center py-1">
-                            +{appts.length - 4} weitere
+                        {appts.length > 3 && (
+                          <div className="text-xs text-center text-gray-400">
+                            +{appts.length - 3} mehr
                           </div>
-                        )}
-                        {appts.length === 0 && (
-                          <div className="text-[11px] text-gray-500">–</div>
                         )}
                       </div>
                     </div>
@@ -363,30 +356,30 @@ export default function AdminAppointmentsPage() {
         </div>
       </section>
 
+
       {/* Day Appointments Modal */}
       {showDayModal && selectedDay && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-gray-800 rounded-2xl border border-gray-700 w-full max-w-2xl max-h-[80vh] overflow-hidden">
             <div className="p-6">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-amber-400">
-                  Termine am {selectedDay.toLocaleDateString('de-DE', { 
+                <h2 className="text-xl font-bold text-amber-400">
+                  Termine für {selectedDay.toLocaleDateString('de-DE', { 
                     weekday: 'long', 
-                    year: 'numeric', 
-                    month: 'long', 
-                    day: 'numeric' 
+                    day: 'numeric', 
+                    month: 'long' 
                   })}
                 </h2>
                 <button
-                  onClick={closeDayModal}
-                  className="text-gray-400 hover:text-white text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-700 transition-colors"
+                  onClick={() => setShowDayModal(false)}
+                  className="text-gray-400 hover:text-white text-2xl touch-target"
                 >
                   ×
                 </button>
               </div>
 
               <div className="space-y-4 max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800">
-                {selectedDayAppointments.map((appointment, index) => (
+                {selectedDayAppointments.map((appointment) => (
                   <div key={appointment.id} className="bg-gray-700 rounded-lg p-4 border border-gray-600">
                     <div className="flex justify-between items-start mb-3">
                       <div>
@@ -394,62 +387,68 @@ export default function AdminAppointmentsPage() {
                         <p className="text-gray-300 text-sm">{appointment.email}</p>
                       </div>
                       <div className="text-right">
-                        <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          appointment.status === 'cancelled' 
-                            ? 'bg-red-600 text-white' 
-                            : 'bg-green-600 text-white'
-                        }`}>
-                          {appointment.status === 'cancelled' ? 'Cancelled' : 'Active'}
-                        </div>
+                        <div className="text-lg font-bold text-white">{appointment.time}</div>
+                        <div className="text-sm text-gray-400">{appointment.service?.duration} Min</div>
                       </div>
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4 mb-3">
-                      <div>
-                        <p className="text-xs text-gray-400 mb-1">Zeit</p>
-                        <p className="text-white font-medium">{appointment.time}</p>
+                    <div className="mb-3">
+                      <div className="text-sm text-gray-300">
+                        <span className="font-medium">Service:</span> {appointment.service?.name}
                       </div>
-                      <div>
-                        <p className="text-xs text-gray-400 mb-1">Service</p>
-                        <p className="text-white font-medium">{appointment.service?.name || 'N/A'}</p>
-                      </div>
+                      {appointment.notes && (
+                        <div className="text-sm text-gray-300 mt-1">
+                          <span className="font-medium">Hinweise:</span> {appointment.notes}
+                        </div>
+                      )}
                     </div>
 
-                    {appointment.notes && (
-                      <div className="mb-3">
-                        <p className="text-xs text-gray-400 mb-1">Notizen</p>
-                        <p className="text-gray-300 text-sm italic">&ldquo;{appointment.notes}&rdquo;</p>
-                      </div>
-                    )}
-
-                    {appointment.status !== 'cancelled' && (
-                      <div className="flex justify-end">
+                    <div className="flex gap-2">
+                      {appointment.status === 'cancelled' ? (
+                        <button className="px-3 py-1 bg-red-600 text-white text-xs rounded-lg transition-colors touch-target cursor-default">
+                          Storniert
+                        </button>
+                      ) : (
+                        <button className="px-3 py-1 bg-amber-600 text-white text-xs rounded-lg transition-colors touch-target cursor-default">
+                          Aktiv
+                        </button>
+                      )}
+                      {appointment.status !== 'cancelled' && (
                         <button
                           onClick={() => {
-                            handleCancel(appointment.id)
-                            closeDayModal()
+                            cancelAppointment(appointment.id)
+                            setShowDayModal(false)
                           }}
-                          className="px-4 py-2 bg-red-600 text-white text-sm rounded-lg hover:bg-red-700 transition-colors"
+                          className="px-3 py-1 bg-red-600 text-white text-xs rounded-lg hover:bg-red-700 transition-colors touch-target"
                         >
-                          Termin absagen
+                          Stornieren
                         </button>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 ))}
+                {selectedDayAppointments.length === 0 && (
+                  <div className="text-center py-8">
+                    <p className="text-gray-400">Keine Termine an diesem Tag</p>
+                  </div>
+                )}
               </div>
-
-              {selectedDayAppointments.length === 0 && (
-                <div className="text-center py-8">
-                  <p className="text-gray-400">Keine Termine an diesem Tag</p>
-                </div>
-              )}
             </div>
           </div>
         </div>
       )}
 
+      {/* Logout Button - Bottom Section */}
+      <section className="px-4 pb-8">
+        <div className="max-w-6xl mx-auto text-center">
+          <button
+            onClick={handleLogout}
+            className="px-6 py-3 bg-red-600 text-white font-medium rounded-lg hover:bg-red-700 transition-colors touch-target"
+          >
+            Abmelden
+          </button>
+        </div>
+      </section>
     </main>
   )
 }
-

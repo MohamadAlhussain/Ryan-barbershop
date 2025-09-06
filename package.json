@@ -1,12 +1,15 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "ryan-barbershop",
+  "version": "1.0.0",
+  "description": "Professional barbershop booking system with online appointments",
+  "author": "Ryan Barbershop",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --fix",
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@upstash/redis": "^1.35.3",

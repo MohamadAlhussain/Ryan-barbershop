@@ -4,7 +4,7 @@ export type Appointment = {
   id: string
   name: string
   email: string
-  service: { id: number; name: string; price: string; duration: number }
+  service: { id: number; name: string; price?: string; duration?: number }
   date: string // YYYY-MM-DD
   time: string // HH:mm
   notes?: string
@@ -22,9 +22,13 @@ console.log('Redis config loaded from environment variables')
 
 export async function readAppointments(): Promise<Appointment[]> {
   try {
-    console.log('Reading appointments from Redis...')
+    // Use cache if available and not expired
+    const now = Date.now()
+    if (appointmentsCache && (now - cacheTimestamp) < CACHE_DURATION) {
+      return appointmentsCache
+    }
+    
     const data = await redis.get(APPOINTMENTS_KEY)
-    console.log('Raw data from Redis:', data)
     
     // Handle different data types from Redis
     let appointments: Appointment[] = []
@@ -47,7 +51,10 @@ export async function readAppointments(): Promise<Appointment[]> {
       }
     }
     
-    console.log('Parsed appointments:', appointments)
+    // Update cache
+    appointmentsCache = appointments
+    cacheTimestamp = now
+    
     return appointments
   } catch (error) {
     console.error('Error reading appointments:', error)
@@ -57,29 +64,56 @@ export async function readAppointments(): Promise<Appointment[]> {
 
 export async function writeAppointments(list: Appointment[]): Promise<void> {
   try {
-    console.log('Writing appointments to Redis:', list)
+    // Skip encryption for performance - store data directly
     await redis.set(APPOINTMENTS_KEY, JSON.stringify(list))
-    console.log('Appointments written successfully')
   } catch (error) {
     console.error('Error writing appointments:', error)
     throw error
   }
 }
 
+// Cache for better performance
+let appointmentsCache: Appointment[] | null = null
+let cacheTimestamp = 0
+const CACHE_DURATION = 30000 // 30 seconds
+
 export async function isSlotTaken(date: string, time: string): Promise<boolean> {
-  const all = await readAppointments()
-  // Lock by date+time regardless of service to prevent double booking
-  // Only consider active appointments (ignore cancelled ones)
-  return all.some(a => a.date === date && a.time === time && a.status !== 'cancelled')
+  const now = Date.now()
+  
+  // Use cache if available and not expired
+  if (appointmentsCache && (now - cacheTimestamp) < CACHE_DURATION) {
+    return appointmentsCache.some(a => a.date === date && a.time === time && a.status !== 'cancelled')
+  }
+  
+  // Load fresh data and cache it
+  appointmentsCache = await readAppointments()
+  cacheTimestamp = now
+  
+  return appointmentsCache.some(a => a.date === date && a.time === time && a.status !== 'cancelled')
 }
 
 export async function createAppointment(a: Appointment): Promise<void> {
-  const list = await readAppointments()
   // Set default status if not provided
   if (!a.status) {
     a.status = 'active'
   }
+  
+  // Use cache if available, otherwise load fresh data
+  const now = Date.now()
+  let list: Appointment[]
+  
+  if (appointmentsCache && (now - cacheTimestamp) < CACHE_DURATION) {
+    list = [...appointmentsCache]
+  } else {
+    list = await readAppointments()
+  }
+  
   list.push(a)
+  
+  // Update cache
+  appointmentsCache = list
+  cacheTimestamp = now
+  
   await writeAppointments(list)
 }
 
@@ -134,8 +168,8 @@ export async function rescheduleAppointment(
     }
     
     // Check if new slot is available
-    const isSlotTaken = await isSlotTaken(newDate, newTime)
-    if (isSlotTaken) {
+    const slotTaken = await isSlotTaken(newDate, newTime)
+    if (slotTaken) {
       return false
     }
     

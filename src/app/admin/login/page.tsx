@@ -30,7 +30,7 @@ export default function AdminLogin() {
       } else {
         setError('Falsches Passwort')
       }
-    } catch (error) {
+    } catch {
       setError('Fehler beim Anmelden')
     } finally {
       setIsLoading(false)

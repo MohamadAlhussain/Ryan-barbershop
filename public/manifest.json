@@ -1,0 +1,44 @@
+{
+  "name": "Ryan Barbershop Potsdam",
+  "short_name": "Ryan Barbershop",
+  "description": "Der beste Friseur in Potsdam - Online Terminbuchung",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#f59e0b",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/barber.webp",
+      "sizes": "192x192",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/barber.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/ryanbarber (1).webp",
+      "sizes": "1280x720",
+      "type": "image/webp",
+      "form_factor": "wide",
+      "label": "Ryan Barbershop Interior"
+    },
+    {
+      "src": "/ryanbarber (2).webp",
+      "sizes": "640x1280",
+      "type": "image/webp",
+      "form_factor": "narrow",
+      "label": "Mobile Booking Experience"
+    }
+  ],
+  "categories": ["business", "lifestyle"],
+  "lang": "de",
+  "scope": "/",
+  "prefer_related_applications": false
+}

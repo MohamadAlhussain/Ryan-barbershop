@@ -4,7 +4,6 @@ import {
   createAppointment, 
   isSlotTaken, 
   readAppointments, 
-  cleanupOldAppointments, 
   cancelAppointment,
   rescheduleAppointment,
   getAppointmentById,
@@ -12,6 +11,7 @@ import {
   type Appointment 
 } from '@/lib/appointments'
 import { checkRateLimit, getClientIP } from '@/lib/rateLimiter'
+import { validateBooking } from '@/lib/validation'
 
 export async function GET(req: Request) {
   try {
@@ -22,8 +22,19 @@ export async function GET(req: Request) {
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     }
 
-    // Clean up old appointments before returning the list
-    await cleanupOldAppointments()
+    // Rate limiting for GET requests
+    const clientIP = getClientIP(req)
+    const rateLimit = checkRateLimit(clientIP, 'general')
+    
+    if (!rateLimit.allowed) {
+      return NextResponse.json({ 
+        error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.',
+        resetTime: rateLimit.resetTime
+      }, { status: 429, headers })
+    }
+
+    // Skip cleanup for better performance - do it in background
+    // await cleanupOldAppointments()
     
     const { searchParams } = new URL(req.url)
     const email = searchParams.get('email')
@@ -37,8 +48,8 @@ export async function GET(req: Request) {
       const list = await readAppointments()
       return NextResponse.json({ appointments: list }, { headers })
     }
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500, headers })
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch appointments' }, { status: 500 })
   }
 }
 
@@ -51,33 +62,40 @@ export async function POST(req: Request) {
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     }
 
-    // Rate limiting check
+    // Enhanced rate limiting check
     const clientIP = getClientIP(req)
-    const rateLimit = checkRateLimit(clientIP, 3, 15 * 60 * 1000) // 3 requests per 15 minutes
+    const rateLimit = checkRateLimit(clientIP, 'booking') // Use booking-specific rate limits
     
     if (!rateLimit.allowed) {
+      const errorMessage = rateLimit.isBlocked 
+        ? `Ihre IP wurde aufgrund verdächtiger Aktivität blockiert. Bitte versuchen Sie es in ${Math.ceil((rateLimit.resetTime - Date.now()) / 60000)} Minuten erneut.`
+        : `Zu viele Buchungsversuche. Bitte versuchen Sie es in ${Math.ceil((rateLimit.resetTime - Date.now()) / 60000)} Minuten erneut.`
+      
       return NextResponse.json({ 
-        error: 'Too many booking attempts. Please try again later.',
-        resetTime: rateLimit.resetTime
+        error: errorMessage,
+        resetTime: rateLimit.resetTime,
+        isBlocked: rateLimit.isBlocked,
+        isSuspicious: rateLimit.isSuspicious
       }, { status: 429, headers })
     }
 
     const body = await req.json()
-    const {
-      name,
-      email,
-      service,
-      date,
-      time,
-      notes
-    } = body || {}
-
-    if (!name || !email || !service || !date || !time) {
-      return NextResponse.json({ error: 'Missing required fields' }, { status: 400, headers })
+    
+    // Validate booking data
+    const validation = validateBooking(body)
+    if (!validation.isValid) {
+      return NextResponse.json({ 
+        error: 'Validierungsfehler',
+        details: validation.errors
+      }, { status: 400, headers })
     }
 
+    const { name, email, service, date, time, notes } = validation.sanitizedData!
+
     if (await isSlotTaken(String(date), String(time))) {
-      return NextResponse.json({ error: 'Slot already taken' }, { status: 409, headers })
+      return NextResponse.json({ 
+        error: 'Dieser Termin-Slot ist bereits belegt. Bitte wählen Sie eine andere Uhrzeit.' 
+      }, { status: 409, headers })
     }
 
     const appointment: Appointment = {
@@ -86,9 +104,7 @@ export async function POST(req: Request) {
       email: String(email),
       service: {
         id: Number(service.id),
-        name: String(service.name),
-        price: String(service.price),
-        duration: Number(service.duration)
+        name: String(service.name)
       },
       date: String(date),
       time: String(time),
@@ -96,22 +112,18 @@ export async function POST(req: Request) {
       createdAt: new Date().toISOString()
     }
 
-    console.log('Creating appointment:', appointment)
     await createAppointment(appointment)
-    console.log('Appointment created successfully')
-    
-    // Clean up old appointments after creating new one
-    await cleanupOldAppointments()
-    console.log('Old appointments cleaned up')
 
-    // Send email notification (configure via env vars)
-    const smtpHost = process.env.SMTP_HOST
-    const smtpPort = Number(process.env.SMTP_PORT || 587)
-    const smtpUser = process.env.SMTP_USER
-    const smtpPass = process.env.SMTP_PASS
-    const fromEmail = process.env.MAIL_FROM || smtpUser
+    // Send email notification asynchronously (don't wait for it)
+    setImmediate(async () => {
+      try {
+        const smtpHost = process.env.SMTP_HOST
+        const smtpPort = Number(process.env.SMTP_PORT || 587)
+        const smtpUser = process.env.SMTP_USER
+        const smtpPass = process.env.SMTP_PASS
+        const fromEmail = process.env.MAIL_FROM || smtpUser
 
-    if (smtpHost && smtpUser && smtpPass && fromEmail) {
+        if (smtpHost && smtpUser && smtpPass && fromEmail) {
       const transporter = nodemailer.createTransport({
         host: smtpHost,
         port: smtpPort,
@@ -129,7 +141,7 @@ export async function POST(req: Request) {
         `Dauer: ${appointment.service.duration} Min\n` +
         `${appointment.notes ? `\nHinweise: ${appointment.notes}\n` : ''}` +
         `\nFalls Sie den Termin absagen möchten, kontaktieren Sie uns bitte direkt:\n` +
-        `📞 Telefon: +49 123 456 789\n` +
+        `📞 Telefon: +49 179 742 1768\n` +
         `📧 E-Mail: info@ryanbarber.de\n` +
         `\nBis bald im RYAN BARBERSHOP!`
 
@@ -173,9 +185,6 @@ export async function POST(req: Request) {
                         <p style="margin:0;font-size:11px;color:#64748b;font-weight:500">Service</p>
                         <p style="margin:0;font-size:14px;color:#1e293b;font-weight:700">${appointment.service.name}</p>
                       </div>
-                    </div>
-                    <div style="text-align:right">
-                      <p style="margin:0;font-size:16px;color:#f59e0b;font-weight:800">${appointment.service.price}</p>
                     </div>
                   </div>
 
@@ -247,7 +256,7 @@ export async function POST(req: Request) {
                   Falls Sie den Termin absagen oder ändern möchten, kontaktieren Sie uns bitte direkt:
                 </p>
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:15px;margin:10px 0">
-                  <p style="margin:0 0 8px 0;font-size:14px;color:#1e293b;font-weight:600">📞 Telefon: +49 123 456 789</p>
+                  <p style="margin:0 0 8px 0;font-size:14px;color:#1e293b;font-weight:600">📞 Telefon: +49 179 742 1768</p>
                   <p style="margin:0;font-size:14px;color:#1e293b;font-weight:600">📧 E-Mail: info@ryanbarber.de</p>
                 </div>
               </div>
@@ -270,24 +279,28 @@ export async function POST(req: Request) {
       </body>
       </html>`
 
-      await transporter.sendMail({
-        from: fromEmail?.includes('<') ? fromEmail : `"RYAN BARBERSHOP" <${fromEmail}>`,
-        to: appointment.email,
-        subject,
-        text,
-        html,
-        replyTo: fromEmail
-      })
-    }
+          await transporter.sendMail({
+            from: fromEmail?.includes('<') ? fromEmail : `"RYAN BARBERSHOP" <${fromEmail}>`,
+            to: appointment.email,
+            subject,
+            text,
+            html,
+            replyTo: fromEmail
+          })
+        }
+      } catch (error) {
+        console.error('Error sending email:', error)
+      }
+    })
 
   return NextResponse.json({ appointment }, { status: 201, headers })
   } catch {
-    return NextResponse.json({ error: 'Unexpected error' }, { status: 500, headers })
+    return NextResponse.json({ error: 'Unexpected error' }, { status: 500 })
   }
 }
 
 // Send cancellation email
-export async function sendCancellationEmail(appointment: Appointment) {
+async function sendCancellationEmail(appointment: Appointment) {
   const smtpHost = process.env.SMTP_HOST
   const smtpPort = Number(process.env.SMTP_PORT || 587)
   const smtpUser = process.env.SMTP_USER
@@ -450,13 +463,13 @@ export async function DELETE(req: Request) {
     } else {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404, headers })
     }
-  } catch (error) {
-    return NextResponse.json({ error: 'Failed to cancel appointment' }, { status: 500, headers })
+  } catch {
+    return NextResponse.json({ error: 'Failed to cancel appointment' }, { status: 500 })
   }
 }
 
 // Handle CORS preflight requests
-export async function OPTIONS(req: Request) {
+export async function OPTIONS() {
   return new NextResponse(null, {
     status: 200,
     headers: {
@@ -483,7 +496,7 @@ export async function PUT(req: Request) {
     } else {
       return NextResponse.json({ error: 'Failed to reschedule - slot may be taken or appointment not found' }, { status: 400 })
     }
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Failed to reschedule appointment' }, { status: 500 })
   }
 }

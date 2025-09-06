@@ -2,10 +2,10 @@ import Link from 'next/link'
 
 export default function Services() {
   const services = [
-    { name: "Herren Haarschnitt", price: "€15", duration: "30 Min", description: "Professioneller Herrenschnitt mit modernen Techniken" },
-    { name: "Herren Haar Schnitt mit Waschen", price: "€20", duration: "30 Min", description: "Haarschnitt inklusive professioneller Haarwäsche" },
-    { name: "Kinder Haarschnitt", price: "€15", duration: "30 Min", description: "Spaßiger und professioneller Schnitt für Kinder" },
-    { name: "Kinder Harrschnitt mit Waschen", price: "€18", duration: "30 Min", description: "Kinderhaarschnitt inklusive Haarwäsche" },
+    { name: "Herrenhaarschnitt", price: "€15", duration: "30 Min", description: "Professioneller Herrenhaarschnitt mit modernen Techniken" },
+    { name: "Herrenhaarschnitt mit Waschen", price: "€20", duration: "30 Min", description: "Herrenhaarschnitt inklusive professioneller Haarwäsche" },
+    { name: "Kinderhaarschnitt", price: "€15", duration: "30 Min", description: "Spaßiger und professioneller Haarschnitt für Kinder" },
+    { name: "Kinderhaarschnitt mit Waschen", price: "€18", duration: "30 Min", description: "Kinderhaarschnitt inklusive Haarwäsche" },
     { name: "Bart Styling", price: "€12", duration: "30 Min", description: "Professionelle Bartformung und -styling" },
     { name: "Gesichtsreinigung", price: "€15", duration: "30 Min", description: "Professionelle Gesichtsreinigung und -pflege" }
   ]
@@ -31,41 +31,41 @@ export default function Services() {
   return (
     <main className="min-h-screen bg-black text-white">
       {/* Header */}
-      <section className="pt-32 pb-16 px-4 bg-gradient-to-b from-gray-900 to-black">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent leading-none">
+      <section className="pt-32 pb-8 px-4 bg-gradient-to-b from-gray-900 to-black">
+        <div className="container-max text-center">
+          <h1 className="heading-primary mb-4 fade-in">
             Unsere Services
           </h1>
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2">
-            Professionelle Dienstleistungen mit 20 Jahren Erfahrung - von klassischen Schnitten bis zu modernen Trends
+          <p className="text-body text-gray-400 max-w-3xl mx-auto fade-in-delay-1">
+            Professionelle Dienstleistungen mit 20 Jahren Erfahrung - von klassischen Haarschnitten bis zu modernen Trends
           </p>
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-16 px-4 bg-black">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <section className="section-padding bg-black">
+        <div className="container-max fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 fade-in-delay-1">
             {services.map((service, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border-2 border-gray-700 hover:border-amber-400/40 transition-all duration-300 transform hover:scale-105 group shadow-xl shadow-amber-500/10"
+                className="card card-hover group"
               >
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-bold text-white group-hover:text-amber-400 transition-colors">
+                  <h3 className="text-lg font-bold text-white link-hover">
                     {service.name}
                   </h3>
                   <div className="text-right">
-                    <div className="text-2xl font-bold text-amber-400">{service.price}</div>
-                    <div className="text-sm text-gray-400">{service.duration}</div>
+                    <div className="text-xl font-bold text-amber-400">{service.price}</div>
+                    <div className="text-small">{service.duration}</div>
                   </div>
                 </div>
-                <p className="text-gray-300 leading-relaxed mb-4">
+                <p className="text-body mb-4">
                   {service.description}
                 </p>
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-400">Dauer: {service.duration}</span>
-                  <button className="px-4 py-2 bg-amber-500 text-black rounded-3xl text-sm font-medium hover:bg-amber-600 transition-colors">
+                  <span className="text-small">Dauer: {service.duration}</span>
+                  <button className="btn-small">
                     Buchen
                   </button>
                 </div>
@@ -76,22 +76,22 @@ export default function Services() {
       </section>
 
       {/* Special Offers */}
-      <section className="py-16 px-4 bg-gray-900">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center text-white">
+      <section className="section-padding bg-gray-900">
+        <div className="container-max fade-in">
+          <h2 className="heading-secondary mb-12 text-center fade-in">
             Spezialangebote & Rabatte
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 fade-in-delay-1">
             {specialOffers.map((offer, index) => (
               <div
                 key={index}
-                className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 p-8 rounded-2xl border-2 border-amber-400/40 text-center group hover:border-amber-400 transition-all duration-300 shadow-2xl shadow-amber-500/20"
+                className="bg-gradient-to-br from-amber-500/20 to-orange-500/20 p-8 rounded-2xl border-2 border-amber-400/40 text-center group card-hover shadow-2xl shadow-amber-500/20"
               >
-                <div className="text-4xl font-bold text-amber-400 mb-4 group-hover:scale-110 transition-transform">
+                <div className="text-4xl font-bold text-amber-400 mb-4 interactive-hover">
                   {offer.discount}
                 </div>
-                <h3 className="text-xl font-bold text-white mb-3">{offer.title}</h3>
-                <p className="text-gray-300">{offer.description}</p>
+                <h3 className="text-lg font-bold text-white mb-3">{offer.title}</h3>
+                <p className="text-body">{offer.description}</p>
               </div>
             ))}
           </div>
@@ -99,12 +99,12 @@ export default function Services() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 px-4 bg-black">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-12 text-center text-white">
+      <section className="section-padding bg-black">
+        <div className="container-max fade-in">
+          <h2 className="heading-secondary mb-12 text-center fade-in">
             Warum Ryan Barbershop?
           </h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 fade-in-delay-1">
             {[
               { title: "20 Jahre Erfahrung", desc: "Professionelle Expertise seit Generationen" },
               { title: "Freundliches Team", desc: "Persönliche Betreuung und Beratung" },
@@ -112,9 +112,8 @@ export default function Services() {
               { title: "Flexible Zeiten", desc: "Mo-Fr 9:00-19:00, Sa 9:00-18:00" }
             ].map((feature, index) => (
               <div key={index} className="text-center">
-
-                <h3 className="text-xl font-bold text-amber-400 mb-3">{feature.title}</h3>
-                <p className="text-gray-300 text-sm leading-relaxed">{feature.desc}</p>
+                <h3 className="text-lg font-bold text-amber-400 mb-3">{feature.title}</h3>
+                <p className="text-small">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -123,24 +122,18 @@ export default function Services() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-amber-600 to-orange-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-8 text-white">
+        <div className="max-w-4xl mx-auto text-center fade-in">
+          <h2 className="heading-secondary mb-6 text-white">
             Bereit für Ihren neuen Look?
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-8">
+          <p className="text-body text-white/90 mb-8">
             Buchen Sie Ihren Termin noch heute und erleben Sie den Ryan Barbershop Unterschied
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/booking" 
-              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-3xl text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
-            >
+          <div className="flex flex-row gap-3 justify-center">
+            <Link href="/booking" className="btn-primary">
               Jetzt Termin Buchen
             </Link>
-            <Link 
-              href="/about" 
-              className="px-8 py-4 border-2 border-white text-white font-bold rounded-3xl text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
-            >
+            <Link href="/about" className="btn-secondary">
               Über Uns
             </Link>
           </div>

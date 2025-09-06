@@ -6,23 +6,21 @@ export default function Contact() {
     <main className="min-h-screen bg-black text-white">
       {/* Header */}
       <section className="pt-32 pb-8 px-4 bg-gradient-to-b from-gray-900 to-black">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent leading-none">
+        <div className="container-max text-center">
+          <h1 className="heading-primary mb-4 fade-in">
             Kontakt
           </h1>
-          <p className="text-sm sm:text-base md:text-base lg:text-lg text-gray-400 max-w-3xl mx-auto leading-relaxed px-2">
+          <p className="text-body text-gray-400 max-w-3xl mx-auto fade-in-delay-1">
             Besuchen Sie uns in Potsdam oder kontaktieren Sie uns für einen Termin
           </p>
         </div>
       </section>
 
+
       {/* Contact Information */}
-      <section className="py-12 px-4 bg-black">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+      <section className="section-padding bg-black">
+        <div className="container-max fade-in">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center fade-in-delay-1">
             {/* Contact Details */}
             <div className="space-y-8">
               <div className="flex items-start space-x-6">
@@ -30,11 +28,14 @@ export default function Contact() {
 
                   </div>
                   <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3">Adresse</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                  <h3 className="text-lg font-bold text-white mb-3">Adresse</h3>
+                  <p className="text-body">
                       Ryan Barbershop<br />
-                      Potsdam, Deutschland<br />
-                    <span className="text-amber-400">Zentrale Lage in Potsdam</span>
+                      Dortustraße 22<br />
+                      14467 Potsdam, Deutschland<br />
+                    <a href="https://www.google.com/maps/place/RYAN+BARBER+SHOP/@52.3997,13.0531701,17z/data=!4m6!3m5!1s0x47a8f5f004e0127f:0xc66d6100a3723d16!8m2!3d52.3997!4d13.0531701!16s%2Fg%2F11py9sg6vv?entry=ttu&g_ep=EgoyMDI1MDkwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">
+                      📍 Auf Google Maps anzeigen
+                    </a>
                     </p>
                   </div>
                 </div>
@@ -44,10 +45,10 @@ export default function Contact() {
 
                   </div>
                   <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3">Telefon</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
-                    <a href="tel:+49331XXXXXXX" className="text-amber-400 hover:text-amber-300 transition-colors">
-                      +49 (0) 331 - XXXXXXX
+                  <h3 className="text-lg font-bold text-white mb-3">Telefon</h3>
+                  <p className="text-body">
+                    <a href="tel:+491797421768" className="text-amber-400 hover:text-amber-300 transition-colors">
+                      +49 179 742 1768
                     </a><br />
                     <span className="text-gray-400">Für Termine und Anfragen</span>
                     </p>
@@ -59,8 +60,8 @@ export default function Contact() {
 
                   </div>
                   <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3">E-Mail</h3>
-                  <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                  <h3 className="text-lg font-bold text-white mb-3">E-Mail</h3>
+                  <p className="text-body">
                     <a href="mailto:info@ryanbarber.de" className="text-amber-400 hover:text-amber-300 transition-colors">
                       info@ryanbarber.de
                     </a><br />
@@ -74,8 +75,8 @@ export default function Contact() {
 
                   </div>
                   <div>
-                  <h3 className="text-base sm:text-lg md:text-xl font-bold text-white mb-3">Öffnungszeiten</h3>
-                                      <div className="text-sm sm:text-base md:text-lg text-gray-300 space-y-2">
+                  <h3 className="text-lg font-bold text-white mb-3">Öffnungszeiten</h3>
+                                      <div className="text-body space-y-2">
                     <p><span className="text-amber-400 font-semibold">Montag - Freitag:</span> 09:00 - 19:00</p>
                     <p><span className="text-amber-400 font-semibold">Samstag:</span> 09:00 - 18:00</p>
                     <p><span className="text-amber-400 font-semibold">Sonntag:</span> Geschlossen</p>
@@ -102,36 +103,14 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Social Media Section */}
-      <section className="py-16 px-4 bg-gray-900">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-8 text-white">
-            Folgen Sie uns
-          </h2>
-          <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-12 max-w-2xl mx-auto">
-            Bleiben Sie auf dem Laufenden über unsere neuesten Angebote und Trends
-          </p>
-          <div className="flex justify-center space-x-8">
-            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
-
-            </a>
-            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
-
-            </a>
-            <a href="#" className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center text-2xl hover:scale-110 transition-transform duration-300">
-
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4 bg-black">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-12 text-center text-white">
+      <section className="py-24 px-4 bg-black">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="heading-secondary mb-6 text-center fade-in">
             Häufig gestellte Fragen
           </h2>
-          <div className="space-y-6">
+          <div className="space-y-6 fade-in-delay-1">
             {[
               {
                 question: "Wie kann ich einen Termin buchen?",
@@ -151,10 +130,10 @@ export default function Contact() {
               }
             ].map((faq, index) => (
               <div key={index} className="bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold text-amber-400 mb-3">
+                <h3 className="text-lg font-bold text-amber-400 mb-3">
                   {faq.question}
                 </h3>
-                <p className="text-sm sm:text-base md:text-lg text-gray-300 leading-relaxed">
+                <p className="text-body">
                   {faq.answer}
                 </p>
               </div>
@@ -165,24 +144,18 @@ export default function Contact() {
 
       {/* CTA Section */}
       <section className="py-20 px-4 bg-gradient-to-r from-amber-600 to-orange-600">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-base sm:text-lg md:text-xl lg:text-2xl font-bold mb-8 text-white">
+        <div className="max-w-4xl mx-auto text-center fade-in">
+          <h2 className="heading-secondary mb-6 text-white">
             Bereit für Ihren Besuch?
           </h2>
-          <p className="text-sm sm:text-base md:text-lg text-white/90 mb-8">
+          <p className="text-body text-white/90 mb-8">
             Kontaktieren Sie uns noch heute und vereinbaren Sie Ihren Termin
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
-              href="/booking" 
-              className="px-8 py-4 bg-white text-amber-600 font-bold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-2xl"
-            >
+          <div className="flex flex-row gap-3 justify-center">
+            <Link href="/booking" className="btn-primary">
               Termin Buchen
             </Link>
-            <Link 
-              href="/services" 
-              className="px-8 py-4 border-2 border-white text-white font-bold rounded-3xl text-sm sm:text-base md:text-lg hover:bg-white hover:text-amber-600 transition-all duration-300 transform hover:scale-105"
-            >
+            <Link href="/services" className="btn-secondary">
               Services ansehen
             </Link>
           </div>

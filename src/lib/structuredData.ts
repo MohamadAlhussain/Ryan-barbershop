@@ -4,19 +4,19 @@ export const businessStructuredData = {
   "name": "Ryan Barbershop",
   "description": "Der beste Friseur in Potsdam - Professionelle Herrenfrisuren, Bartpflege und Styling seit über 20 Jahren",
   "url": "https://ryanbarber.de",
-  "telephone": "+49-331-123456",
+  "telephone": "+49-179-742-1768",
   "email": "info@ryanbarber.de",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Brandenburger Straße 123",
+    "streetAddress": "Dortustraße 22",
     "addressLocality": "Potsdam",
     "postalCode": "14467",
     "addressCountry": "DE"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "52.3989",
-    "longitude": "13.0667"
+    "latitude": "52.3997",
+    "longitude": "13.0531701"
   },
   "openingHoursSpecification": [
     {
@@ -53,7 +53,7 @@ export const businessStructuredData = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Herren Haarschnitt",
+          "name": "Herrenhaarschnitt",
           "description": "Professioneller Herrenhaarschnitt mit Beratung"
         },
         "price": "15",
@@ -63,7 +63,7 @@ export const businessStructuredData = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Herren Haar Schnitt mit Waschen",
+          "name": "Herrenhaarschnitt mit Waschen",
           "description": "Herrenhaarschnitt inklusive Haarwäsche"
         },
         "price": "20",
@@ -73,7 +73,7 @@ export const businessStructuredData = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Kinder Haarschnitt",
+          "name": "Kinderhaarschnitt",
           "description": "Spezieller Haarschnitt für Kinder"
         },
         "price": "15",
@@ -83,7 +83,7 @@ export const businessStructuredData = {
         "@type": "Offer",
         "itemOffered": {
           "@type": "Service",
-          "name": "Kinder Harrschnitt mit Waschen",
+          "name": "Kinderhaarschnitt mit Waschen",
           "description": "Kinderhaarschnitt inklusive Haarwäsche"
         },
         "price": "18",

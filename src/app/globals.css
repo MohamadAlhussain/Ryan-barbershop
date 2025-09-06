@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile-first optimizations */
+@media (max-width: 768px) {
+  html {
+    font-size: 16px; /* Prevent zoom on iOS */
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+  }
+  
+  body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overscroll-behavior: none; /* Prevent bounce on iOS */
+  }
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -10,6 +25,7 @@
   body {
     @apply antialiased;
   }
+
 }
 
 @layer components {
@@ -20,9 +36,156 @@
   .glass-effect {
     @apply bg-white/10 backdrop-blur-md border border-white/20;
   }
-  
-  .hover-lift {
-    @apply transition-all duration-300 hover:transform hover:scale-105 hover:shadow-2xl;
+
+  /* Unified Animation System */
+  .fade-in {
+    @apply opacity-0 translate-y-4;
+    animation: fadeIn 0.6s ease-out forwards;
+  }
+
+  .fade-in-delay-1 {
+    @apply opacity-0 translate-y-4;
+    animation: fadeIn 0.6s ease-out 0.1s forwards;
+  }
+
+  .fade-in-delay-2 {
+    @apply opacity-0 translate-y-4;
+    animation: fadeIn 0.6s ease-out 0.2s forwards;
+  }
+
+  .fade-in-delay-3 {
+    @apply opacity-0 translate-y-4;
+    animation: fadeIn 0.6s ease-out 0.3s forwards;
+  }
+
+  /* Button Components - Unified System */
+  .btn-primary {
+    @apply px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-bold text-sm rounded-full shadow-xl hover:from-amber-600 hover:to-orange-700 transition-all duration-200 hover:scale-105 touch-manipulation;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 border-2 border-white text-white font-bold text-sm rounded-full hover:bg-white hover:text-amber-600 transition-all duration-200 hover:scale-105 touch-manipulation;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 border border-amber-500 text-amber-400 font-semibold text-sm rounded-full hover:bg-amber-500 hover:text-black transition-all duration-200 hover:scale-105 touch-manipulation;
+  }
+
+  .btn-small {
+    @apply px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-600 text-black font-semibold text-sm rounded-full hover:from-amber-600 hover:to-orange-700 transition-all duration-200 hover:scale-105 touch-manipulation;
+  }
+
+  /* Card Components - Unified Hover System */
+  .card {
+    @apply bg-gradient-to-br from-gray-800 to-gray-900 p-6 rounded-2xl border border-gray-700 shadow-xl;
+  }
+
+  .card-hover {
+    @apply transition-all duration-200;
+  }
+
+  /* Interactive Elements - Unified Hover System */
+  .interactive-hover {
+    @apply transition-all duration-200;
+  }
+
+  .link-hover {
+    @apply transition-colors duration-200;
+  }
+
+  /* Typography System */
+  .heading-primary {
+    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-500 bg-clip-text text-transparent;
+  }
+
+  .heading-secondary {
+    @apply text-2xl md:text-3xl font-bold text-white;
+  }
+
+  .heading-tertiary {
+    @apply text-xl md:text-2xl font-bold text-white;
+  }
+
+  .text-body {
+    @apply text-base text-gray-300 font-normal;
+  }
+
+  .text-body-large {
+    @apply text-lg text-gray-300 font-normal;
+  }
+
+  .text-small {
+    @apply text-sm text-gray-400 font-normal;
+  }
+
+  .text-caption {
+    @apply text-xs text-gray-500 font-normal;
+  }
+
+  /* Spacing Utilities */
+  .section-padding {
+    @apply py-16 md:py-24 px-4;
+  }
+
+  .container-max {
+    @apply max-w-6xl mx-auto;
+  }
+
+  /* Mobile Touch Optimizations */
+  .touch-scroll {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+  }
+
+  .swipe-container {
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+  }
+
+  .swipe-item {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+  }
+
+  /* Loading States */
+  .skeleton {
+    @apply animate-pulse bg-gray-700 rounded;
+  }
+
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-gray-600 border-t-amber-500;
+  }
+
+  /* Performance Optimizations */
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  .gpu-accelerated {
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -55,12 +218,120 @@
   }
 }
 
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+  20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes wiggle {
+  0%, 7% { transform: rotateZ(0); }
+  15% { transform: rotateZ(-15deg); }
+  20% { transform: rotateZ(10deg); }
+  25% { transform: rotateZ(-10deg); }
+  30% { transform: rotateZ(6deg); }
+  35% { transform: rotateZ(-4deg); }
+  40%, 100% { transform: rotateZ(0); }
+}
+
 .animate-float {
   animation: float 6s ease-in-out infinite;
 }
 
 .animate-pulse-glow {
   animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+.animate-slide-in-up {
+  animation: slideInUp 0.5s ease-out;
+}
+
+.animate-slide-in-down {
+  animation: slideInDown 0.5s ease-out;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.3s ease-out;
+}
+
+.animate-wiggle {
+  animation: wiggle 1s ease-in-out;
 }
 
 /* Custom scrollbar */

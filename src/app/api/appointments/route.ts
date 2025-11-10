@@ -14,6 +14,15 @@ import {
 import { checkRateLimit, getClientIP } from '@/lib/rateLimiter'
 import { validateBooking } from '@/lib/validation'
 
+const SERVICE_METADATA: Record<string, { duration: number; price: string }> = {
+  'Herrenhaarschnitt': { duration: 30, price: '€15' },
+  'Herrenhaarschnitt mit Waschen': { duration: 30, price: '€20' },
+  'Kinderhaarschnitt': { duration: 30, price: '€15' },
+  'Kinderhaarschnitt mit Waschen': { duration: 30, price: '€18' },
+  'Bart Styling': { duration: 30, price: '€12' },
+  'Gesichtsreinigung': { duration: 30, price: '€15' },
+}
+
 export async function GET(req: Request) {
   try {
     // Add CORS headers
@@ -103,13 +112,17 @@ export async function POST(req: Request) {
       }, { status: 409, headers })
     }
 
+    const serviceMeta = SERVICE_METADATA[String(service.name)] ?? { duration: 30, price: '€15' }
+
     const appointment: Appointment = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       name: String(name),
       email: String(email),
       service: {
         id: Number(service.id),
-        name: String(service.name)
+        name: String(service.name),
+        duration: serviceMeta.duration,
+        price: serviceMeta.price,
       },
       date: String(date),
       time: String(time),
@@ -119,38 +132,38 @@ export async function POST(req: Request) {
 
     await createAppointment(appointment)
 
-    // Send email notification asynchronously (don't wait for it)
-    setImmediate(async () => {
-      try {
-        const smtpHost = process.env.SMTP_HOST
-        const smtpPort = Number(process.env.SMTP_PORT || 587)
-        const smtpUser = process.env.SMTP_USER
-        const smtpPass = process.env.SMTP_PASS
-        const fromEmail = process.env.MAIL_FROM || smtpUser
+    try {
+      const smtpHost = process.env.SMTP_HOST
+      const smtpPort = Number(process.env.SMTP_PORT || 587)
+      const smtpUser = process.env.SMTP_USER
+      const smtpPass = process.env.SMTP_PASS
+      const fromEmail = process.env.MAIL_FROM || smtpUser
 
-        if (smtpHost && smtpUser && smtpPass && fromEmail) {
-      const transporter = nodemailer.createTransport({
-        host: smtpHost,
-        port: smtpPort,
-        secure: smtpPort === 465,
-        auth: { user: smtpUser, pass: smtpPass }
-      })
+      if (smtpHost && smtpUser && smtpPass && fromEmail) {
+        const transporter = nodemailer.createTransport({
+          host: smtpHost,
+          port: smtpPort,
+          secure: smtpPort === 465,
+          auth: { user: smtpUser, pass: smtpPass }
+        })
 
-      const subject = `Terminbestätigung ${appointment.date} ${appointment.time}`
-      
-      const text = `Hallo ${appointment.name},\n\n` +
-        `Ihr Termin wurde bestätigt.\n` +
-        `Service: ${appointment.service.name}\n` +
-        `Datum: ${appointment.date}\n` +
-        `Uhrzeit: ${appointment.time}\n` +
-        `Dauer: ${appointment.service.duration} Min\n` +
-        `${appointment.notes ? `\nHinweise: ${appointment.notes}\n` : ''}` +
-        `\nFalls Sie den Termin absagen möchten, kontaktieren Sie uns bitte direkt:\n` +
-        `📞 Telefon: +49 179 742 1768\n` +
-        `📧 E-Mail: info@ryanbarber.de\n` +
-        `\nBis bald im RYAN BARBERSHOP!`
+        const subject = `Terminbestätigung ${appointment.date} ${appointment.time}`
+        
+        const durationText = appointment.service.duration ?? serviceMeta.duration
 
-      const html = `
+        const text = `Hallo ${appointment.name},\n\n` +
+          `Ihr Termin wurde bestätigt.\n` +
+          `Service: ${appointment.service.name}\n` +
+          `Datum: ${appointment.date}\n` +
+          `Uhrzeit: ${appointment.time}\n` +
+          `Dauer: ${durationText} Min\n` +
+          `${appointment.notes ? `\nHinweise: ${appointment.notes}\n` : ''}` +
+          `\nFalls Sie den Termin absagen möchten، kontaktieren Sie uns bitte direkt:\n` +
+          `📞 Telefon: +49 179 742 1768\n` +
+          `📧 E-Mail: info@ryanbarber.de\n` +
+          `\nBis bald im RYAN BARBERSHOP!`
+
+        const html = `
       <!DOCTYPE html>
       <html lang="de">
       <head>
@@ -224,7 +237,7 @@ export async function POST(req: Request) {
                       </div>
                       <div>
                         <p style="margin:0;font-size:11px;color:#64748b;font-weight:500">Dauer</p>
-                        <p style="margin:0;font-size:14px;color:#1e293b;font-weight:700">${appointment.service.duration} Minuten</p>
+                        <p style="margin:0;font-size:14px;color:#1e293b;font-weight:700">${durationText} Minuten</p>
                       </div>
                     </div>
                   </div>
@@ -284,19 +297,20 @@ export async function POST(req: Request) {
       </body>
       </html>`
 
-          await transporter.sendMail({
-            from: fromEmail?.includes('<') ? fromEmail : `"RYAN BARBERSHOP" <${fromEmail}>`,
-            to: appointment.email,
-            subject,
-            text,
-            html,
-            replyTo: fromEmail
-          })
-        }
-      } catch (error) {
-        console.error('Error sending email:', error)
+        await transporter.sendMail({
+          from: fromEmail.includes('<') ? fromEmail : `"RYAN BARBERSHOP" <${fromEmail}>`,
+          to: appointment.email,
+          subject,
+          text,
+          html,
+          replyTo: fromEmail
+        })
+      } else {
+        console.error('SMTP configuration missing, skipping confirmation email')
       }
-    })
+    } catch (error) {
+      console.error('Error sending confirmation email:', error)
+    }
 
   return NextResponse.json({ appointment }, { status: 201, headers })
   } catch {
@@ -321,6 +335,10 @@ async function sendCancellationEmail(appointment: Appointment) {
     })
 
     const subject = `Termin abgesagt - ${appointment.date} ${appointment.time}`
+    const cancelDuration =
+      appointment.service?.duration ??
+      SERVICE_METADATA[appointment.service?.name ?? '']?.duration ??
+      30
     
     const text = `Hallo ${appointment.name},\n\n` +
       `Ihr Termin wurde erfolgreich abgesagt.\n` +
@@ -385,7 +403,7 @@ async function sendCancellationEmail(appointment: Appointment) {
                   </div>
                 </div>
 
-                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0">
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #fca5a5">
                   <div style="display:flex;align-items:center">
                     <div style="width:32px;height:32px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-right:12px">
                       <span style="color:#ffffff;font-size:14px;font-weight:bold">🕐</span>
@@ -393,6 +411,17 @@ async function sendCancellationEmail(appointment: Appointment) {
                     <div>
                       <p style="margin:0;font-size:11px;color:#991b1b;font-weight:500">Uhrzeit</p>
                       <p style="margin:0;font-size:14px;color:#1e293b;font-weight:700">${appointment.time}</p>
+                    </div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0">
+                  <div style="display:flex;align-items:center">
+                    <div style="width:32px;height:32px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border-radius:8px;display:flex;align-items:center;justify-content:center;margin-right:12px">
+                      <span style="color:#ffffff;font-size:14px;font-weight:bold">⏱️</span>
+                    </div>
+                    <div>
+                      <p style="margin:0;font-size:11px;color:#991b1b;font-weight:500">Geplante Dauer</p>
+                      <p style="margin:0;font-size:14px;color:#1e293b;font-weight:700">${cancelDuration} Minuten</p>
                     </div>
                   </div>
                 </div>

@@ -95,7 +95,7 @@ export default function Contact() {
                   fill
                   className="object-cover rounded-3xl"
                   loading="lazy"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 384px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10"></div>
                 </div>

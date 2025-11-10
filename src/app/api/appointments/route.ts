@@ -8,6 +8,7 @@ import {
   rescheduleAppointment,
   getAppointmentById,
   getAppointmentsByEmail,
+  cleanupOldAppointments,
   type Appointment 
 } from '@/lib/appointments'
 import { checkRateLimit, getClientIP } from '@/lib/rateLimiter'
@@ -33,8 +34,12 @@ export async function GET(req: Request) {
       }, { status: 429, headers })
     }
 
-    // Skip cleanup for better performance - do it in background
-    // await cleanupOldAppointments()
+    // Cleanup appointments older than 60 days in the background
+    setImmediate(() => {
+      cleanupOldAppointments().catch((error: unknown) => {
+        console.error('Failed to cleanup old appointments:', error)
+      })
+    })
     
     const { searchParams } = new URL(req.url)
     const email = searchParams.get('email')
@@ -396,9 +401,9 @@ async function sendCancellationEmail(appointment: Appointment) {
 
             <!-- New Booking CTA -->
             <div style="text-align:center;margin-bottom:25px">
-              <div style="display:inline-block;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:50px;padding:12px 24px;box-shadow:0 8px 20px -5px rgba(245,158,11,0.4)">
-                <p style="margin:0;font-size:14px;color:#ffffff;font-weight:700;letter-spacing:0.3px">Neuen Termin buchen? 🎉</p>
-              </div>
+              <a href="https://ryan-barbershop.vercel.app/" style="display:inline-block;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:50px;padding:12px 24px;box-shadow:0 8px 20px -5px rgba(245,158,11,0.4);font-size:14px;color:#ffffff;font-weight:700;letter-spacing:0.3px;text-decoration:none">
+                Neuen Termin buchen
+              </a>
             </div>
 
             <!-- Footer -->

@@ -120,7 +120,7 @@ export async function createAppointment(a: Appointment): Promise<void> {
 export async function cleanupOldAppointments(): Promise<number> {
   const appointments = await readAppointments()
   const cutoffDate = new Date()
-  cutoffDate.setDate(cutoffDate.getDate() - 14) // 14 days ago
+  cutoffDate.setDate(cutoffDate.getDate() - 60) // 60 days ago
   
   const filtered = appointments.filter(apt => {
     const appointmentDate = new Date(apt.date)

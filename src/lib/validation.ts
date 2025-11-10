@@ -317,13 +317,3 @@ export function validateBooking(booking: {
 }
 
 // Rate limiting validation
-export function validateRateLimit(ip: string, attempts: number, maxAttempts: number): ValidationResult {
-  if (attempts >= maxAttempts) {
-    return { 
-      isValid: false, 
-      error: `Zu viele Versuche. Bitte versuchen Sie es später erneut. (${maxAttempts} Versuche pro 15 Minuten)` 
-    }
-  }
-  
-  return { isValid: true }
-}

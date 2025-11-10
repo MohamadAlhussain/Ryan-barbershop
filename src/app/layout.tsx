@@ -7,12 +7,11 @@ import { businessStructuredData, websiteStructuredData, organizationStructuredDa
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://ryanbarber.de'),
   title: 'Ryan Barbershop Potsdam - Der beste Friseur in Potsdam | Herrenfrisuren & Bartpflege',
   description: 'Der beste Friseur in Potsdam! 20+ Jahre Erfahrung in professionellen Herrenfrisuren, Bartpflege und Styling. Kostenlose Getränke, freundliches Team. Jetzt Termin buchen!',
   keywords: 'Friseur Potsdam, Barbershop Potsdam, Herrenfrisur Potsdam, Bartpflege Potsdam, Friseur Brandenburg, Barbershop Brandenburg, Herrenfrisur Brandenburg, Termin buchen Potsdam, Ryan Barbershop, bester Friseur Potsdam, Dortustraße 22, 14467 Potsdam',
   authors: [{ name: 'Ryan Barbershop' }],
-  viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
-  themeColor: '#000000',
   openGraph: {
     title: 'Ryan Barbershop Potsdam - Der beste Friseur in Potsdam',
     description: '20+ Jahre Erfahrung in professionellen Herrenfrisuren und Bartpflege. Kostenlose Getränke, freundliches Team. Jetzt Termin buchen!',
@@ -30,6 +29,13 @@ export const metadata: Metadata = {
     ]
   },
   manifest: '/manifest.json',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#000000',
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({

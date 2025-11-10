@@ -84,8 +84,8 @@ cd ryan-barbershop
 npm install
 
 # Set up environment variables (see VERCEL_KV_SETUP.md)
-cp .env.local.example .env.local
-# Edit .env.local with your Vercel KV credentials
+cp env.example .env.local
+# Edit .env.local with your Vercel KV credentials, SMTP settings, and ADMIN_PASSWORD
 
 # Run development server
 npm run dev

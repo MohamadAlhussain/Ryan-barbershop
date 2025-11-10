@@ -60,6 +60,24 @@ export default function AdminAppointmentsPage() {
     load()
   }, [isAuthenticated])
 
+  useEffect(() => {
+    if (typeof document === 'undefined') {
+      return
+    }
+
+    const previousOverflow = document.body.style.overflow
+
+    if (showDayModal) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [showDayModal])
+
   const handleLogout = () => {
     localStorage.removeItem('admin_auth')
     router.push('/admin/login')

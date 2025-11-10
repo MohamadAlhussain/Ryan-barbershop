@@ -157,26 +157,6 @@ export function resetRateLimit(identifier: string, type: keyof typeof RATE_LIMIT
   return rateLimitStore.delete(key)
 }
 
-// Get all blocked IPs (admin function)
-export function getBlockedIPs(): Array<{ identifier: string; type: string; blockUntil: number; isSuspicious: boolean }> {
-  const now = Date.now()
-  const blocked: Array<{ identifier: string; type: string; blockUntil: number; isSuspicious: boolean }> = []
-  
-  for (const [key, entry] of rateLimitStore.entries()) {
-    if (entry.blocked && entry.blockUntil && now < entry.blockUntil) {
-      const [type, identifier] = key.split(':', 2)
-      blocked.push({
-        identifier,
-        type,
-        blockUntil: entry.blockUntil,
-        isSuspicious: entry.suspicious
-      })
-    }
-  }
-  
-  return blocked
-}
-
 export function getClientIP(request: Request): string {
   const forwarded = request.headers.get('x-forwarded-for')
   const realIP = request.headers.get('x-real-ip')

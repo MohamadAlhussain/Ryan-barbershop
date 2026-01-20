@@ -27,57 +27,57 @@ export default function Contact() {
               <div className="flex items-start space-x-6">
                 <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <h3 className="text-lg font-bold text-white mb-3">Adresse</h3>
                   <p className="text-body">
-                      Ryan Barbershop<br />
-                      Dortustraße 22<br />
-                      14467 Potsdam, Deutschland<br />
-                    <a href="https://www.google.com/maps/place/RYAN+BARBER+SHOP/@52.3997,13.0531701,17z/data=!4m6!3m5!1s0x47a8f5f004e0127f:0xc66d6100a3723d16!8m2!3d52.3997!4d13.0531701!16s%2Fg%2F11py9sg6vv?entry=ttu&g_ep=EgoyMDI1MDkwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">
+                    Royal Barbershop<br />
+                    Musterstraße 123<br />
+                    14467 Potsdam, Deutschland<br />
+                    <a href="https://www.google.com/maps/search/Barbershop+Potsdam" target="_blank" rel="noopener noreferrer" className="text-amber-400 hover:text-amber-300 transition-colors">
                       📍 Auf Google Maps anzeigen
                     </a>
-                    </p>
-                  </div>
+                  </p>
                 </div>
+              </div>
 
               <div className="flex items-start space-x-6">
                 <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <h3 className="text-lg font-bold text-white mb-3">Telefon</h3>
                   <p className="text-body">
-                    <a href="tel:+491797421768" className="text-amber-400 hover:text-amber-300 transition-colors">
-                      +49 179 742 1768
+                    <a href="tel:+493311234567" className="text-amber-400 hover:text-amber-300 transition-colors">
+                      +49 331 1234567
                     </a><br />
                     <span className="text-gray-400">Für Termine und Anfragen</span>
-                    </p>
-                  </div>
+                  </p>
                 </div>
+              </div>
 
               <div className="flex items-start space-x-6">
                 <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <h3 className="text-lg font-bold text-white mb-3">E-Mail</h3>
                   <p className="text-body">
-                    <a href="mailto:info@ryanbarber.de" className="text-amber-400 hover:text-amber-300 transition-colors">
-                      info@ryanbarber.de
+                    <a href="mailto:info@royal-barbershop.de" className="text-amber-400 hover:text-amber-300 transition-colors">
+                      info@royal-barbershop.de
                     </a><br />
                     <span className="text-gray-400">Allgemeine Anfragen</span>
-                    </p>
-                  </div>
+                  </p>
                 </div>
+              </div>
 
               <div className="flex items-start space-x-6">
                 <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
-                  </div>
-                  <div>
+                </div>
+                <div>
                   <h3 className="text-lg font-bold text-white mb-3">Öffnungszeiten</h3>
-                                      <div className="text-body space-y-2">
+                  <div className="text-body space-y-2">
                     <p><span className="text-amber-400 font-semibold">Montag - Freitag:</span> 09:00 - 19:00</p>
                     <p><span className="text-amber-400 font-semibold">Samstag:</span> 09:00 - 18:00</p>
                     <p><span className="text-amber-400 font-semibold">Sonntag:</span> Geschlossen</p>
@@ -91,14 +91,14 @@ export default function Contact() {
               <div className="w-full h-96 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                 <Image
                   src="/ryanbarber (3).webp"
-                  alt="Ryan Barbershop Potsdam"
+                  alt="Royal Barbershop Potsdam"
                   fill
                   className="object-cover rounded-3xl"
                   loading="lazy"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 384px"
                 />
                 <div className="absolute inset-0 bg-gradient-to-br from-amber-500/10 to-orange-500/10"></div>
-                </div>
+              </div>
             </div>
           </div>
         </div>

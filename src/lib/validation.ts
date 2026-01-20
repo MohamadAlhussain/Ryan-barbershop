@@ -1,4 +1,4 @@
-// Validation utilities for Ryan Barbershop
+// Validation utilities for Royal Barbershop
 // تحسينات التحقق من صحة البيانات
 
 export interface ValidationResult {
@@ -15,15 +15,15 @@ export function validateEmail(email: string): ValidationResult {
 
   // Trim and sanitize
   const sanitized = email.trim().toLowerCase()
-  
+
   // Basic email regex for German emails
   const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-  
+
   if (!emailRegex.test(sanitized)) {
     return { isValid: false, error: 'Bitte geben Sie eine gültige E-Mail-Adresse ein' }
   }
 
-  
+
   if (sanitized.length > 254) {
     return { isValid: false, error: 'E-Mail-Adresse ist zu lang' }
   }
@@ -39,20 +39,20 @@ export function validatePhoneNumber(phone: string): ValidationResult {
 
   // Remove all non-digit characters except +
   const sanitized = phone.replace(/[^\d+]/g, '')
-  
+
   // German phone number patterns
   const patterns = [
     /^\+49\d{10,11}$/, // +49XXXXXXXXXX
     /^0\d{9,10}$/,     // 0XXXXXXXXX
     /^0049\d{10,11}$/  // 0049XXXXXXXXXX
   ]
-  
+
   const isValid = patterns.some(pattern => pattern.test(sanitized))
-  
+
   if (!isValid) {
-    return { 
-      isValid: false, 
-      error: 'Bitte geben Sie eine gültige deutsche Telefonnummer ein (z.B. +49 179 742 1768 oder 0179 742 1768)' 
+    return {
+      isValid: false,
+      error: 'Bitte geben Sie eine gültige deutsche Telefonnummer ein (z.B. +49 179 742 1768 oder 0179 742 1768)'
     }
   }
 
@@ -74,18 +74,18 @@ export function validateName(name: string): ValidationResult {
   }
 
   const sanitized = name.trim()
-  
+
   if (sanitized.length < 2) {
     return { isValid: false, error: 'Name muss mindestens 2 Zeichen lang sein' }
   }
-  
+
   if (sanitized.length > 50) {
     return { isValid: false, error: 'Name ist zu lang (max. 50 Zeichen)' }
   }
 
   // Check for valid characters (letters, spaces, hyphens, apostrophes)
   const nameRegex = /^[a-zA-ZäöüÄÖÜß\s\-']+$/
-  
+
   if (!nameRegex.test(sanitized)) {
     return { isValid: false, error: 'Name enthält ungültige Zeichen' }
   }
@@ -100,7 +100,7 @@ export function validateNotes(notes: string): ValidationResult {
   }
 
   const sanitized = notes.trim()
-  
+
   if (sanitized.length > 500) {
     return { isValid: false, error: 'Hinweise sind zu lang (max. 500 Zeichen)' }
   }
@@ -111,7 +111,7 @@ export function validateNotes(notes: string): ValidationResult {
     /javascript:/gi,
     /on\w+\s*=/gi
   ]
-  
+
   let cleaned = sanitized
   dangerousPatterns.forEach(pattern => {
     cleaned = cleaned.replace(pattern, '')
@@ -135,7 +135,7 @@ export function validateDate(date: string): ValidationResult {
   const appointmentDate = new Date(date)
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  
+
   if (isNaN(appointmentDate.getTime())) {
     return { isValid: false, error: 'Ungültiges Datum' }
   }
@@ -147,7 +147,7 @@ export function validateDate(date: string): ValidationResult {
   // Check if date is not more than 30 days in the future
   const maxDate = new Date()
   maxDate.setDate(today.getDate() + 30)
-  
+
   if (appointmentDate > maxDate) {
     return { isValid: false, error: 'Datum darf nicht mehr als 30 Tage in der Zukunft liegen' }
   }
@@ -168,7 +168,7 @@ export function validateTime(time: string): ValidationResult {
   }
 
   const [hours, minutes] = time.split(':').map(Number)
-  
+
   // Check if time is within business hours (9:00 - 19:00)
   if (hours < 9 || hours >= 19) {
     return { isValid: false, error: 'Uhrzeit muss zwischen 09:00 und 19:00 liegen' }
@@ -183,7 +183,7 @@ export function validateTime(time: string): ValidationResult {
 }
 
 // Service validation
-export function validateService(service: {id?: number, name?: string}): {isValid: boolean, error?: string, sanitizedValue?: {id?: number, name?: string}} {
+export function validateService(service: { id?: number, name?: string }): { isValid: boolean, error?: string, sanitizedValue?: { id?: number, name?: string } } {
   if (!service || typeof service !== 'object') {
     return { isValid: false, error: 'Service ist erforderlich' }
   }
@@ -212,23 +212,25 @@ export function validateService(service: {id?: number, name?: string}): {isValid
 export function validateBooking(booking: {
   name?: string;
   email?: string;
-  service?: {id?: number, name?: string};
+  service?: { id?: number, name?: string };
   date?: string;
   time?: string;
   notes?: string;
-}): { isValid: boolean; errors: string[]; sanitizedData?: {
-  name: string;
-  email: string;
-  service: {id?: number, name?: string};
-  date: string;
-  time: string;
-  notes: string;
-} } {
+}): {
+  isValid: boolean; errors: string[]; sanitizedData?: {
+    name: string;
+    email: string;
+    service: { id?: number, name?: string };
+    date: string;
+    time: string;
+    notes: string;
+  }
+} {
   const errors: string[] = []
   const sanitizedData: {
     name?: string;
     email?: string;
-    service?: {id?: number, name?: string};
+    service?: { id?: number, name?: string };
     date?: string;
     time?: string;
     notes?: string;
@@ -308,7 +310,7 @@ export function validateBooking(booking: {
     sanitizedData: errors.length === 0 ? sanitizedData as {
       name: string;
       email: string;
-      service: {id?: number, name?: string};
+      service: { id?: number, name?: string };
       date: string;
       time: string;
       notes: string;

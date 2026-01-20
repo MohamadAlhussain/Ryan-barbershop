@@ -27,16 +27,16 @@ export default function About() {
               </h2>
               <div className="space-y-6 text-body">
                 <p>
-                  Was als kleiner Traum begann, ist heute zu einem der beliebtesten Barbershops in Potsdam geworden. 
+                  Was als kleiner Traum begann, ist heute zu einem der beliebtesten Barbershops in Potsdam geworden.
                   Seit über 20 Jahren bieten wir professionelle Herrenfrisuren und Bartpflege mit Leidenschaft und Hingabe.
                 </p>
                 <p>
-                  Unser Team besteht aus erfahrenen Friseuren, die nicht nur ihr Handwerk beherrschen, sondern auch 
-                  die neuesten Trends und Techniken kennen. Wir sind stolz darauf, unseren Kunden den perfekten Look 
+                  Unser Team besteht aus erfahrenen Friseuren, die nicht nur ihr Handwerk beherrschen, sondern auch
+                  die neuesten Trends und Techniken kennen. Wir sind stolz darauf, unseren Kunden den perfekten Look
                   zu verleihen.
                 </p>
                 <p>
-                  Bei Ryan Barbershop geht es nicht nur um Haare schneiden - es geht um eine Erfahrung. 
+                  Bei Royal Barbershop geht es nicht nur um Haare schneiden - es geht um eine Erfahrung.
                   Wir schaffen eine entspannte Atmosphäre, in der sich unsere Kunden wohlfühlen und verwöhnt werden.
                 </p>
               </div>
@@ -70,7 +70,7 @@ export default function About() {
               Was uns antreibt und was Sie bei uns erwarten können
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-3 gap-8 fade-in-delay-1">
             {[
               {
@@ -106,7 +106,7 @@ export default function About() {
               Erfahrene Profis, die Ihr Vertrauen verdienen
             </p>
           </div>
-          
+
           <div className="grid md:grid-cols-2 gap-12 items-center fade-in-delay-1">
             <div className="space-y-6">
               <div className="flex items-start space-x-4">
@@ -116,24 +116,24 @@ export default function About() {
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">Erfahrene Friseure</h3>
                   <p className="text-body">
-                    Unser Team besteht aus erfahrenen Friseuren mit jahrzehntelanger Erfahrung. 
+                    Unser Team besteht aus erfahrenen Friseuren mit jahrzehntelanger Erfahrung.
                     Wir kennen die neuesten Trends und Techniken.
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">Regelmäßige Weiterbildung</h3>
                   <p className="text-body">
-                    Wir investieren kontinuierlich in unsere Weiterbildung, um Ihnen den besten Service 
+                    Wir investieren kontinuierlich in unsere Weiterbildung, um Ihnen den besten Service
                     und die neuesten Techniken zu bieten.
                   </p>
                 </div>
               </div>
-              
+
               <div className="flex items-start space-x-4">
                 <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-orange-500 rounded-3xl flex items-center justify-center flex-shrink-0">
 
@@ -141,13 +141,13 @@ export default function About() {
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">Leidenschaft für das Handwerk</h3>
                   <p className="text-body">
-                    Wir lieben, was wir tun. Diese Leidenschaft spüren Sie in jedem Haarschnitt und 
+                    Wir lieben, was wir tun. Diese Leidenschaft spüren Sie in jedem Haarschnitt und
                     in jeder Beratung.
                   </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="relative">
               <div className="w-full h-96 rounded-3xl overflow-hidden border-2 border-amber-400/40 shadow-2xl shadow-amber-500/20">
                 <Image
@@ -173,7 +173,7 @@ export default function About() {
             Lernen Sie uns kennen
           </h2>
           <p className="text-body text-white/90 mb-8">
-            Besuchen Sie uns in Potsdam und erleben Sie den Ryan Barbershop Unterschied
+            Besuchen Sie uns in Potsdam und erleben Sie den Royal Barbershop Unterschied
           </p>
           <div className="flex flex-row gap-3 justify-center">
             <Link href="/booking" className="btn-primary">

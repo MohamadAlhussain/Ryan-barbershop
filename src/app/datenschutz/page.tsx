@@ -27,7 +27,7 @@ export default function Datenschutz() {
       <section className="py-24 px-4 bg-black">
         <div className="max-w-4xl mx-auto fade-in">
           <div className="space-y-12">
-            
+
             {/* 1. Datenschutz auf einen Blick */}
             <div className="card">
               <h2 className="heading-tertiary mb-6 text-amber-400">
@@ -37,9 +37,9 @@ export default function Datenschutz() {
                 <div>
                   <h3 className="text-lg font-bold text-white mb-3">Allgemeine Hinweise</h3>
                   <p>
-                    Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten 
-                    passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie 
-                    persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen 
+                    Die folgenden Hinweise geben einen einfachen Überblick darüber, was mit Ihren personenbezogenen Daten
+                    passiert, wenn Sie diese Website besuchen. Personenbezogene Daten sind alle Daten, mit denen Sie
+                    persönlich identifiziert werden können. Ausführliche Informationen zum Thema Datenschutz entnehmen
                     Sie unserer unter diesem Text aufgeführten Datenschutzerklärung.
                   </p>
                 </div>
@@ -101,7 +101,7 @@ export default function Datenschutz() {
                   <h3 className="text-lg font-bold text-white mb-3">Hinweis zur verantwortlichen Stelle</h3>
                   <div className="bg-gray-800 p-4 rounded-lg">
                     <p className="font-semibold text-amber-300 mb-2">Die verantwortliche Stelle für die Datenverarbeitung auf dieser Website ist:</p>
-                    <p>Jasem Atalla<br />Dortustraße 22<br />14467 Potsdam<br />Telefon: 0179&nbsp;742&nbsp;1768<br />E-Mail: <a href="mailto:info@ryanbarber.de" className="text-amber-400 hover:text-amber-300">info@ryanbarber.de</a></p>
+                    <p>Royal Barbershop Team<br />Musterstraße 123<br />14467 Potsdam<br />Telefon: 0331&nbsp;1234567<br />E-Mail: <a href="mailto:info@royal-barbershop.de" className="text-amber-400 hover:text-amber-300">info@royal-barbershop.de</a></p>
                     <p className="text-sm text-gray-400 mt-2">Verantwortliche Stelle ist die natürliche oder juristische Person, die allein oder gemeinsam mit anderen über die Zwecke und Mittel der Verarbeitung von personenbezogenen Daten entscheidet.</p>
                   </div>
                 </div>
@@ -180,7 +180,7 @@ export default function Datenschutz() {
                 </ul>
                 <p>Diese Daten verwenden wir ausschließlich für die Organisation und Kommunikation bezüglich Ihrer Buchung. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO (Vertragserfüllung bzw. vorvertragliche Maßnahmen).</p>
                 <p>Die Termin- und Kommunikationsdaten werden in einer gehosteten Datenbank von Upstash, Inc. (USA/EU) gespeichert. Der Speicherort befindet sich in der von uns gewählten EU-Region. Mit Upstash besteht ein Auftragsverarbeitungsvertrag nach Art. 28 DSGVO. Die Daten werden spätestens 60 Tage nach dem geplanten Termin automatisch gelöscht, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen.</p>
-                <p>Zur Bestätigung und ggf. Änderung/Absage des Termins versenden wir E-Mails über den von uns konfigurierten SMTP-Dienst (z.&nbsp;B. Gmail oder ein vergleichbarer Provider). Es können hierbei Namen, E-Mail-Adresse, Termin- und Servicedaten verarbeitet werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
+                <p>Zur Bestätigung und ggf. Änderung/Absage des Termins versenden wir E-Mails over den von uns konfigurierten SMTP-Dienst (z.&nbsp;B. Gmail oder ein vergleichbarer Provider). Es können hierbei Namen, E-Mail-Adresse, Termin- und Servicedaten verarbeitet werden. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.</p>
               </div>
             </div>
 
@@ -223,11 +223,11 @@ export default function Datenschutz() {
               <div className="space-y-4 text-body">
                 <p>Bei Fragen zum Datenschutz wenden Sie sich bitte an:</p>
                 <div className="bg-gray-800 p-4 rounded-lg">
-                  <p><strong>Jasem Atalla</strong><br />
-                  Dortustraße 22<br />
-                  14467 Potsdam<br />
-                  Telefon: 0179&nbsp;742&nbsp;1768<br />
-                  E-Mail: <a href="mailto:info@ryanbarber.de" className="text-amber-400 hover:text-amber-300">info@ryanbarber.de</a></p>
+                  <p><strong>Royal Barbershop Team</strong><br />
+                    Musterstraße 123<br />
+                    14467 Potsdam<br />
+                    Telefon: 0331&nbsp;1234567<br />
+                    E-Mail: <a href="mailto:info@royal-barbershop.de" className="text-amber-400 hover:text-amber-300">info@royal-barbershop.de</a></p>
                 </div>
               </div>
             </div>

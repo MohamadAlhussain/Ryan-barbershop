@@ -7,16 +7,16 @@ import { businessStructuredData, websiteStructuredData, organizationStructuredDa
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://ryanbarber.de'),
-  title: 'Ryan Barbershop Potsdam - Der beste Friseur in Potsdam | Herrenfrisuren & Bartpflege',
+  metadataBase: new URL('https://royal-barbershop.de'),
+  title: 'Royal Barbershop Potsdam - Der beste Friseur in Potsdam | Herrenfrisuren & Bartpflege',
   description: 'Der beste Friseur in Potsdam! 20+ Jahre Erfahrung in professionellen Herrenfrisuren, Bartpflege und Styling. Kostenlose Getränke, freundliches Team. Jetzt Termin buchen!',
-  keywords: 'Friseur Potsdam, Barbershop Potsdam, Herrenfrisur Potsdam, Bartpflege Potsdam, Friseur Brandenburg, Barbershop Brandenburg, Herrenfrisur Brandenburg, Termin buchen Potsdam, Ryan Barbershop, bester Friseur Potsdam, Dortustraße 22, 14467 Potsdam',
-  authors: [{ name: 'Ryan Barbershop' }],
+  keywords: 'Friseur Potsdam, Barbershop Potsdam, Herrenfrisur Potsdam, Bartpflege Potsdam, Friseur Brandenburg, Barbershop Brandenburg, Herrenfrisur Brandenburg, Termin buchen Potsdam, Royal Barbershop, bester Friseur Potsdam, Musterstraße 123, 14467 Potsdam',
+  authors: [{ name: 'Royal Barbershop' }],
   openGraph: {
-    title: 'Ryan Barbershop Potsdam - Der beste Friseur in Potsdam',
+    title: 'Royal Barbershop Potsdam - Der beste Friseur in Potsdam',
     description: '20+ Jahre Erfahrung in professionellen Herrenfrisuren und Bartpflege. Kostenlose Getränke, freundliches Team. Jetzt Termin buchen!',
-    url: 'https://ryanbarber.de',
-    siteName: 'Ryan Barbershop',
+    url: 'https://royal-barbershop.de',
+    siteName: 'Royal Barbershop',
     locale: 'de_DE',
     type: 'website',
     images: [

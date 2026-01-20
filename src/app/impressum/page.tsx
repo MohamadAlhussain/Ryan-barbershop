@@ -27,7 +27,7 @@ export default function Impressum() {
       <section className="py-24 px-4 bg-black">
         <div className="max-w-4xl mx-auto fade-in">
           <div className="space-y-12">
-            
+
             {/* Company Information */}
             <div className="card">
               <h2 className="heading-tertiary mb-6 text-amber-400">
@@ -36,11 +36,11 @@ export default function Impressum() {
               <div className="space-y-4 text-body">
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">Unternehmen:</h3>
-                  <p>Ryan Barbershop<br />Inhaber: Jasem Atalla</p>
+                  <p>Royal Barbershop<br />Inhaber: Royal Barbershop Team</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">Adresse:</h3>
-                  <p>Dortustraße 22<br />14467 Potsdam</p>
+                  <p>Musterstraße 123<br />14467 Potsdam</p>
                 </div>
               </div>
             </div>
@@ -53,11 +53,11 @@ export default function Impressum() {
               <div className="space-y-4 text-body">
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">Telefon:</h3>
-                  <p>0049-1797421768</p>
+                  <p>0049-331-1234567</p>
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-white mb-2">E-Mail:</h3>
-                  <p>jasemattaallaa1977@gmail.com</p>
+                  <p>info@royal-barbershop.de</p>
                 </div>
               </div>
             </div>
@@ -68,7 +68,7 @@ export default function Impressum() {
                 Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV:
               </h2>
               <div className="text-body">
-                <p>Jasem Atalla<br />Dortustraße 22<br />14467 Potsdam</p>
+                <p>Royal Barbershop Team<br />Musterstraße 123<br />14467 Potsdam</p>
               </div>
             </div>
 
@@ -78,7 +78,7 @@ export default function Impressum() {
                 Berufsrechtliche Angaben
               </h2>
               <div className="space-y-4 text-body">
-                <p>Ryan Barbershop ist ein Handwerksbetrieb nach der Handwerksordnung (HwO). Zuständige Kammer:</p>
+                <p>Royal Barbershop ist ein Handwerksbetrieb nach der Handwerksordnung (HwO). Zuständige Kammer:</p>
                 <p>
                   Handwerkskammer Potsdam<br />
                   Charlottenstraße 34-36<br />
@@ -102,7 +102,7 @@ export default function Impressum() {
                   <p>Als Diensteanbieter sind wir gemäß § 7 Abs. 1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen. Verpflichtungen zur Entfernung oder Sperrung der Nutzung von Informationen nach den allgemeinen Gesetzen bleiben hiervon unberührt.</p>
                   <p>Eine diesbezügliche Haftung ist jedoch erst ab dem Zeitpunkt der Kenntnis einer konkreten Rechtsverletzung möglich. Bei Bekanntwerden von entsprechenden Rechtsverletzungen entfernen wir diese Inhalte umgehend.</p>
                 </div>
-                
+
                 <div>
                   <h3 className="text-lg font-bold text-white mb-3">Haftung für Links</h3>
                   <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Deshalb können wir für diese fremden Inhalte keine Gewähr übernehmen. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich. Rechtswidrige Inhalte waren zum Zeitpunkt der Verlinkung nicht erkennbar. Bei Bekanntwerden von Rechtsverletzungen entfernen wir derartige Links umgehend.</p>

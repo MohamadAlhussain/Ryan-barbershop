@@ -106,7 +106,7 @@ export default function Services() {
       <section className="section-padding bg-black">
         <div className="container-max fade-in">
           <h2 className="heading-secondary mb-12 text-center fade-in">
-            Warum Ryan Barbershop?
+            Warum Royal Barbershop?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 fade-in-delay-1">
             {[

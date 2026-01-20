@@ -1,6 +1,6 @@
-# Ryan Barbershop Potsdam - Modern Website
+# Royal Barbershop Potsdam - Modern Website
 
-A stunning, modern website for Ryan Barbershop in Potsdam, built with **Next.js 16** and Tailwind CSS. This website replaces the old WordPress site with a cutting-edge, responsive design that showcases the barbershop's 20 years of experience and professional services.
+A stunning, modern website for Royal Barbershop in Potsdam, built with **Next.js 16** and Tailwind CSS. This website replaces the old WordPress site with a cutting-edge, responsive design that showcases the barbershop's 20 years of experience and professional services.
 
 ## ✨ Features
 
@@ -94,7 +94,7 @@ A stunning, modern website for Ryan Barbershop in Potsdam, built with **Next.js 
 ```bash
 # Clone the repository
 git clone <repository-url>
-cd ryan-barbershop
+cd royal-barbershop
 
 # Install dependencies
 npm install

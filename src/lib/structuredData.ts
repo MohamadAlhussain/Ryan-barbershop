@@ -1,14 +1,14 @@
 export const businessStructuredData = {
   "@context": "https://schema.org",
   "@type": "HairSalon",
-  "name": "Ryan Barbershop",
-  "description": "Der beste Friseur in Potsdam - Professionelle Herrenfrisuren, Bartpflege und Styling seit über 20 Jahren",
-  "url": "https://ryanbarber.de",
-  "telephone": "+49-179-742-1768",
-  "email": "info@ryanbarber.de",
+  "name": "Royal Barbershop",
+  "description": "Der beste Friseur in Potsdam - Professionelle Herrenfrisuren, Bartpflege und Styling seit over 20 Jahren",
+  "url": "https://royal-barbershop.de",
+  "telephone": "+49-331-1234567",
+  "email": "info@royal-barbershop.de",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "Dortustraße 22",
+    "streetAddress": "Musterstraße 123",
     "addressLocality": "Potsdam",
     "postalCode": "14467",
     "addressCountry": "DE"
@@ -36,14 +36,14 @@ export const businessStructuredData = {
   "paymentAccepted": ["Cash", "Credit Card", "Debit Card"],
   "currenciesAccepted": "EUR",
   "image": [
-    "https://ryanbarber.de/ryanbarber%20(1).webp",
-    "https://ryanbarber.de/ryanbarber%20(2).webp",
-    "https://ryanbarber.de/ryanbarber%20(3).webp"
+    "https://royal-barbershop.de/ryanbarber%20(1).webp",
+    "https://royal-barbershop.de/ryanbarber%20(2).webp",
+    "https://royal-barbershop.de/ryanbarber%20(3).webp"
   ],
-  "logo": "https://ryanbarber.de/logo.png",
+  "logo": "https://royal-barbershop.de/logo.png",
   "sameAs": [
-    "https://www.facebook.com/ryanbarbershop",
-    "https://www.instagram.com/ryanbarbershop"
+    "https://www.facebook.com/royalbarbershop",
+    "https://www.instagram.com/royalbarbershop"
   ],
   "hasOfferCatalog": {
     "@type": "OfferCatalog",
@@ -123,12 +123,12 @@ export const businessStructuredData = {
 export const websiteStructuredData = {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "name": "Ryan Barbershop",
-  "url": "https://ryanbarber.de",
+  "name": "Royal Barbershop",
+  "url": "https://royal-barbershop.de",
   "description": "Der beste Friseur in Potsdam - Online Terminbuchung",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": "https://ryanbarber.de/booking",
+    "target": "https://royal-barbershop.de/booking",
     "query-input": "required name=search_term_string"
   }
 }
@@ -136,18 +136,18 @@ export const websiteStructuredData = {
 export const organizationStructuredData = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Ryan Barbershop",
-  "url": "https://ryanbarber.de",
-  "logo": "https://ryanbarber.de/logo.png",
+  "name": "Royal Barbershop",
+  "url": "https://royal-barbershop.de",
+  "logo": "https://royal-barbershop.de/logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+49-331-123456",
+    "telephone": "+49-331-1234567",
     "contactType": "customer service",
     "availableLanguage": ["German", "English"]
   },
   "founder": {
     "@type": "Person",
-    "name": "Ryan"
+    "name": "Royal"
   },
-  "foundingDate": "2004"
+  "foundingDate": "2024"
 }

@@ -1,15 +1,15 @@
 import { NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
-import { 
-  createAppointment, 
-  isSlotTaken, 
-  readAppointments, 
+import {
+  createAppointment,
+  isSlotTaken,
+  readAppointments,
   cancelAppointment,
   rescheduleAppointment,
   getAppointmentById,
   getAppointmentsByEmail,
   cleanupOldAppointments,
-  type Appointment 
+  type Appointment
 } from '@/lib/appointments'
 import { checkRateLimit, getClientIP } from '@/lib/rateLimiter'
 import { validateBooking } from '@/lib/validation'
@@ -35,9 +35,9 @@ export async function GET(req: Request) {
     // Rate limiting for GET requests
     const clientIP = getClientIP(req)
     const rateLimit = checkRateLimit(clientIP, 'general')
-    
+
     if (!rateLimit.allowed) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Zu viele Anfragen. Bitte versuchen Sie es später erneut.',
         resetTime: rateLimit.resetTime
       }, { status: 429, headers })
@@ -49,10 +49,10 @@ export async function GET(req: Request) {
         console.error('Failed to cleanup old appointments:', error)
       })
     })
-    
+
     const { searchParams } = new URL(req.url)
     const email = searchParams.get('email')
-    
+
     if (email) {
       // Get appointments for specific email
       const appointments = await getAppointmentsByEmail(email)
@@ -79,13 +79,13 @@ export async function POST(req: Request) {
     // Enhanced rate limiting check
     const clientIP = getClientIP(req)
     const rateLimit = checkRateLimit(clientIP, 'booking') // Use booking-specific rate limits
-    
+
     if (!rateLimit.allowed) {
-      const errorMessage = rateLimit.isBlocked 
+      const errorMessage = rateLimit.isBlocked
         ? `Ihre IP wurde aufgrund verdächtiger Aktivität blockiert. Bitte versuchen Sie es in ${Math.ceil((rateLimit.resetTime - Date.now()) / 60000)} Minuten erneut.`
         : `Zu viele Buchungsversuche. Bitte versuchen Sie es in ${Math.ceil((rateLimit.resetTime - Date.now()) / 60000)} Minuten erneut.`
-      
-      return NextResponse.json({ 
+
+      return NextResponse.json({
         error: errorMessage,
         resetTime: rateLimit.resetTime,
         isBlocked: rateLimit.isBlocked,
@@ -94,11 +94,11 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    
+
     // Validate booking data
     const validation = validateBooking(body)
     if (!validation.isValid) {
-      return NextResponse.json({ 
+      return NextResponse.json({
         error: 'Validierungsfehler',
         details: validation.errors
       }, { status: 400, headers })
@@ -107,8 +107,8 @@ export async function POST(req: Request) {
     const { name, email, service, date, time, notes } = validation.sanitizedData!
 
     if (await isSlotTaken(String(date), String(time))) {
-      return NextResponse.json({ 
-        error: 'Dieser Termin-Slot ist bereits belegt. Bitte wählen Sie eine andere Uhrzeit.' 
+      return NextResponse.json({
+        error: 'Dieser Termin-Slot ist bereits belegt. Bitte wählen Sie eine andere Uhrzeit.'
       }, { status: 409, headers })
     }
 
@@ -148,7 +148,7 @@ export async function POST(req: Request) {
         })
 
         const subject = `Terminbestätigung ${appointment.date} ${appointment.time}`
-        
+
         const durationText = appointment.service.duration ?? serviceMeta.duration
 
         const text = `Hallo ${appointment.name},\n\n` +
@@ -159,9 +159,9 @@ export async function POST(req: Request) {
           `Dauer: ${durationText} Min\n` +
           `${appointment.notes ? `\nHinweise: ${appointment.notes}\n` : ''}` +
           `\nFalls Sie den Termin absagen möchten، kontaktieren Sie uns bitte direkt:\n` +
-          `📞 Telefon: +49 179 742 1768\n` +
-          `📧 E-Mail: info@ryanbarber.de\n` +
-          `\nBis bald im RYAN BARBERSHOP!`
+          `📞 Telefon: +49 331 1234567\n` +
+          `📧 E-Mail: info@royal-barbershop.de\n` +
+          `\nBis bald im ROYAL BARBERSHOP!`
 
         const html = `
       <!DOCTYPE html>
@@ -169,7 +169,7 @@ export async function POST(req: Request) {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Terminbestätigung - Ryan Barbershop</title>
+        <title>Terminbestätigung - Royal Barbershop</title>
       </head>
       <body style="margin:0;padding:0;background-color:#f8fafc;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif">
         <div style="background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);min-height:100vh;padding:20px 10px">
@@ -177,7 +177,7 @@ export async function POST(req: Request) {
             
             <!-- Header with Logo -->
             <div style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);padding:30px 20px;text-align:center">
-              <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.3);line-height:1.2">RYAN<br>BARBERSHOP</h1>
+              <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.3);line-height:1.2">ROYAL<br>BARBERSHOP</h1>
               <p style="margin:8px 0 0 0;font-size:11px;color:#fef3c7;font-weight:500">Premium Barbering Experience</p>
             </div>
 
@@ -274,8 +274,8 @@ export async function POST(req: Request) {
                   Falls Sie den Termin absagen oder ändern möchten, kontaktieren Sie uns bitte direkt:
                 </p>
                 <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:15px;margin:10px 0">
-                  <p style="margin:0 0 8px 0;font-size:14px;color:#1e293b;font-weight:600">📞 Telefon: +49 179 742 1768</p>
-                  <p style="margin:0;font-size:14px;color:#1e293b;font-weight:600">📧 E-Mail: info@ryanbarber.de</p>
+                  <p style="margin:0 0 8px 0;font-size:14px;color:#1e293b;font-weight:600">📞 Telefon: +49 331 1234567</p>
+                  <p style="margin:0;font-size:14px;color:#1e293b;font-weight:600">📧 E-Mail: info@royal-barbershop.de</p>
                 </div>
               </div>
 
@@ -287,7 +287,7 @@ export async function POST(req: Request) {
                 </p>
                 <div style="margin:15px 0;padding:10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0">
                   <p style="margin:0;font-size:10px;color:#94a3b8">
-                    Diese E-Mail wurde automatisch generiert • Ryan Barbershop • © ${new Date().getFullYear()}
+                    Diese E-Mail wurde automatisch generiert • Royal Barbershop • © ${new Date().getFullYear()}
                   </p>
                 </div>
               </div>
@@ -312,7 +312,7 @@ export async function POST(req: Request) {
       console.error('Error sending confirmation email:', error)
     }
 
-  return NextResponse.json({ appointment }, { status: 201, headers })
+    return NextResponse.json({ appointment }, { status: 201, headers })
   } catch {
     return NextResponse.json({ error: 'Unexpected error' }, { status: 500 })
   }
@@ -339,14 +339,14 @@ async function sendCancellationEmail(appointment: Appointment) {
       appointment.service?.duration ??
       SERVICE_METADATA[appointment.service?.name ?? '']?.duration ??
       30
-    
+
     const text = `Hallo ${appointment.name},\n\n` +
       `Ihr Termin wurde erfolgreich abgesagt.\n` +
       `Service: ${appointment.service.name}\n` +
       `Datum: ${appointment.date}\n` +
       `Uhrzeit: ${appointment.time}\n` +
       `\nFalls Sie einen neuen Termin wünschen, können Sie gerne einen neuen Termin buchen.\n` +
-      `\nMit freundlichen Grüßen\nRyan Barbershop`
+      `\nMit freundlichen Grüßen\nRoyal Barbershop`
 
     const html = `
     <!DOCTYPE html>
@@ -354,7 +354,7 @@ async function sendCancellationEmail(appointment: Appointment) {
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Termin abgesagt - Ryan Barbershop</title>
+      <title>Termin abgesagt - Royal Barbershop</title>
     </head>
     <body style="margin:0;padding:0;background-color:#f8fafc;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif">
       <div style="background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);min-height:100vh;padding:20px 10px">
@@ -362,7 +362,7 @@ async function sendCancellationEmail(appointment: Appointment) {
           
           <!-- Header with Logo -->
           <div style="background:linear-gradient(135deg,#dc2626 0%,#b91c1c 100%);padding:30px 20px;text-align:center">
-            <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.3);line-height:1.2">RYAN<br>BARBERSHOP</h1>
+            <h1 style="margin:0;font-size:20px;font-weight:700;color:#ffffff;letter-spacing:0.5px;text-shadow:0 2px 4px rgba(0,0,0,0.3);line-height:1.2">ROYAL<br>BARBERSHOP</h1>
             <p style="margin:8px 0 0 0;font-size:11px;color:#fecaca;font-weight:500">Termin abgesagt</p>
           </div>
 
@@ -430,7 +430,7 @@ async function sendCancellationEmail(appointment: Appointment) {
 
             <!-- New Booking CTA -->
             <div style="text-align:center;margin-bottom:25px">
-              <a href="https://ryan-barbershop.vercel.app/" style="display:inline-block;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:50px;padding:12px 24px;box-shadow:0 8px 20px -5px rgba(245,158,11,0.4);font-size:14px;color:#ffffff;font-weight:700;letter-spacing:0.3px;text-decoration:none">
+              <a href="https://royal-barbershop.de" style="display:inline-block;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:50px;padding:12px 24px;box-shadow:0 8px 20px -5px rgba(245,158,11,0.4);font-size:14px;color:#ffffff;font-weight:700;letter-spacing:0.3px;text-decoration:none">
                 Neuen Termin buchen
               </a>
             </div>
@@ -443,7 +443,7 @@ async function sendCancellationEmail(appointment: Appointment) {
               </p>
               <div style="margin:15px 0;padding:10px;background:#f8fafc;border-radius:6px;border:1px solid #e2e8f0">
                 <p style="margin:0;font-size:10px;color:#94a3b8">
-                  Diese E-Mail wurde automatisch generiert • Ryan Barbershop • © ${new Date().getFullYear()}
+                  Diese E-Mail wurde automatisch generiert • Royal Barbershop • © ${new Date().getFullYear()}
                 </p>
               </div>
             </div>
@@ -454,7 +454,7 @@ async function sendCancellationEmail(appointment: Appointment) {
     </html>`
 
     await transporter.sendMail({
-      from: fromEmail?.includes('<') ? fromEmail : `"RYAN BARBERSHOP" <${fromEmail}>`,
+      from: fromEmail?.includes('<') ? fromEmail : `"ROYAL BARBERSHOP" <${fromEmail}>`,
       to: appointment.email,
       subject,
       text,
@@ -476,23 +476,23 @@ export async function DELETE(req: Request) {
 
     const { searchParams } = new URL(req.url)
     const appointmentId = searchParams.get('id')
-    
+
     if (!appointmentId) {
       return NextResponse.json({ error: 'Appointment ID required' }, { status: 400, headers })
     }
-    
+
     // Get appointment details before cancelling
     const appointment = await getAppointmentById(appointmentId)
     if (!appointment) {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404, headers })
     }
-    
+
     const success = await cancelAppointment(appointmentId)
-    
+
     if (success) {
       // Send cancellation email
       await sendCancellationEmail(appointment)
-      
+
       return NextResponse.json({ message: 'Appointment cancelled successfully' }, { status: 200, headers })
     } else {
       return NextResponse.json({ error: 'Appointment not found' }, { status: 404, headers })
@@ -518,13 +518,13 @@ export async function PUT(req: Request) {
   try {
     const body = await req.json()
     const { appointmentId, newDate, newTime } = body
-    
+
     if (!appointmentId || !newDate || !newTime) {
       return NextResponse.json({ error: 'Appointment ID, new date, and new time required' }, { status: 400 })
     }
-    
+
     const success = await rescheduleAppointment(appointmentId, newDate, newTime)
-    
+
     if (success) {
       return NextResponse.json({ message: 'Appointment rescheduled successfully' }, { status: 200 })
     } else {

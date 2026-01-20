@@ -3,15 +3,15 @@ import Footer from '../components/Footer'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://ryan-barbershop.vercel.app'),
-  title: 'LEXERNO – Webdesign & Webentwicklung für Ryan Barbershop',
+  title: 'LEXERNO – Webdesign & Webentwicklung für Royal Barbershop',
   description:
-    'LEXERNO ist die Agentur hinter der Ryan-Barbershop-Website. Handcodierte Next.js-Webentwicklung, flexible Website-Miete ohne Vorauszahlung und Komplett-Betreuung.',
+    'LEXERNO ist die Agentur hinter der Royal-Barbershop-Website. Handcodierte Next.js-Webentwicklung, flexible Website-Miete ohne Vorauszahlung und Komplett-Betreuung.',
   openGraph: {
     title: 'LEXERNO – Webdesign & Webentwicklung',
     description:
-      'Agentur aus Potsdam/Berlin für handcodierte Next.js-Websites inkl. Terminbuchung, SEO und Hosting. Projektbeispiel: Ryan Barbershop.',
-    url: 'https://ryan-barbershop.vercel.app/lexerno',
-    siteName: 'Ryan Barbershop',
+      'Agentur aus Potsdam/Berlin für handcodierte Next.js-Websites inkl. Terminbuchung, SEO und Hosting. Projektbeispiel: Royal Barbershop.',
+    url: 'https://royal-barbershop.vercel.app/lexerno',
+    siteName: 'Royal Barbershop',
     locale: 'de_DE',
     type: 'website',
   },
@@ -67,7 +67,7 @@ export default function LexernoPage() {
         <div className="container-max text-center">
           <h1 className="heading-primary mb-4 fade-in">LEXERNO – Webdesign & Webentwicklung</h1>
           <p className="text-body text-gray-300 max-w-3xl mx-auto fade-in-delay-1">
-            Wir sind die Agentur hinter der Ryan-Barbershop-Website. Handcodierte Next.js-Projekte, entwickelte in Potsdam
+            Wir sind die Agentur hinter der Royal-Barbershop-Website. Handcodierte Next.js-Projekte, entwickelt in Potsdam
             und Berlin – ohne Templates, ohne Kompromisse.
           </p>
         </div>
@@ -84,7 +84,7 @@ export default function LexernoPage() {
                 Idee bis zum Go-Live bleiben Design, Entwicklung und SEO in einer Hand.
               </p>
               <p className="text-body">
-                Für Ryan Barbershop haben wir eine komplett neue Online-Präsenz geschaffen: Video-Hero, interaktive Buchungsstrecke,
+                Für Royal Barbershop haben wir eine komplett neue Online-Präsenz geschaffen: Video-Hero, interaktive Buchungsstrecke,
                 Admin-Dashboard für Termine, E-Mail-Automatisierung, DSGVO-konforme Datenhaltung und optimierte Inhalte auf Deutsch.
               </p>
             </div>
@@ -124,9 +124,9 @@ export default function LexernoPage() {
         <div className="container-max fade-in">
           <div className="grid md:grid-cols-2 gap-16 items-start fade-in-delay-1">
             <div className="card bg-gradient-to-br from-amber-500/20 to-orange-500/20 border border-amber-400/30">
-              <h2 className="text-xl font-bold text-white mb-4">Projekt: Ryan Barbershop</h2>
+              <h2 className="text-xl font-bold text-white mb-4">Projekt: Royal Barbershop</h2>
               <ul className="space-y-3 text-body">
-                <li>✅ Next.js 15, App Router, TypeScript</li>
+                <li>✅ Next.js 16, App Router, TypeScript</li>
                 <li>✅ Interaktive Terminbuchung mit Upstash Redis & Nodemailer</li>
                 <li>✅ Mehrsprachige Inhalte vorbereitbar</li>
                 <li>✅ Strukturierte Daten & technisches SEO integriert</li>
@@ -142,7 +142,7 @@ export default function LexernoPage() {
               </p>
               <div className="space-y-3">
                 <a
-                  href="https://lexerno.com/de"
+                  href="https://lexerno.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary inline-block"

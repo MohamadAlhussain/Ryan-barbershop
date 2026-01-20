@@ -9,7 +9,7 @@ export default function Footer({ showAdminLink = false }: FooterProps) {
     <footer className="py-8 md:py-12 px-4 bg-black border-t border-gray-800">
       <div className="max-w-6xl mx-auto text-center">
         <div className="mb-6 md:mb-8">
-          <h3 className="text-2xl md:text-3xl font-bold text-amber-400 mb-2 md:mb-4">RYAN BARBERSHOP</h3>
+          <h3 className="text-2xl md:text-3xl font-bold text-amber-400 mb-2 md:mb-4">ROYAL BARBERSHOP</h3>
           <p className="text-gray-300 text-sm md:text-base">Potsdam, Deutschland</p>
         </div>
         <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-6 md:mb-8 text-sm md:text-base">
@@ -32,7 +32,7 @@ export default function Footer({ showAdminLink = false }: FooterProps) {
         <div className="text-gray-300 text-xs md:text-sm">
           <p className="text-gray-300">Mo – Fr : 09:00 – 19:00 | Sa : 09:00 – 18:00</p>
           <p className="mt-1 md:mt-2 text-gray-300">
-            Copyright © 2025 Ryan Barbershop |
+            Copyright © 2026 Royal Barbershop |
             <Link href="/impressum" className="text-amber-200 hover:text-amber-100 font-semibold transition-colors">
               {' '}Impressum
             </Link> |
